@@ -601,6 +601,14 @@ config OVMS_VEHICLE_BYD_ATTO3
     help
         Enable support for BYD Atto 3
 
+config OVMS_VEHICLE_DONGFENG_E60
+    bool "Include support for Dong Feng E60"
+    default y
+    depends on OVMS
+    depends on OVMS_COMP_POLLER
+    help
+        Enable support for Dong Feng E60
+
 config OVMS_VEHICLE_RXTASK_STACK
     int "Stack size for ISOTP Poller RX task"
     default 6144
