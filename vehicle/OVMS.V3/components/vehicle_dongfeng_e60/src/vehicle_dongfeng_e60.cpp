@@ -48,15 +48,15 @@
 #define CAN_BIT(b,pos) 	!!(data[b] & (1<<(pos)))
 
 #define TO_CELCIUS(n)	((float)n-40)
-#define TO_PSI(n)			((float)n/4.0)
+#define TO_PSI(n)		((float)n/4.0)
 
-#define UDS_SID_IOCTRL_BY_ID 			0x2F	// InputOutputControlByCommonID
+#define UDS_SID_IOCTRL_BY_ID 		0x2F	// InputOutputControlByCommonID
 #define UDS_SID_IOCTRL_BY_LOC_ID	0x30 	// InputOutputControlByLocalID
 #define UDS_SID_TESTER_PRESENT		0x3E 	// TesterPresent
 
-#define UDS_DEFAULT_SESSION 									0x01
-#define UDS_PROGRAMMING_SESSION 							0x02
-#define UDS_EXTENDED_DIAGNOSTIC_SESSION 			0x03
+#define UDS_DEFAULT_SESSION 					0x01
+#define UDS_PROGRAMMING_SESSION 				0x02
+#define UDS_EXTENDED_DIAGNOSTIC_SESSION 		0x03
 #define UDS_SAFETY_SYSTEM_DIAGNOSTIC_SESSION 	0x04
     
 #define POLLSTATE_OFF          PollSetState(0);
@@ -105,67 +105,6 @@ OvmsVehicle::vehicle_command_t OvmsVehicleDFE60::CommandUnlock(const char *pin)
 
 void OvmsVehicleDFE60::IncomingFrameCan1(CAN_frame_t *p_frame)
 	{
-
-	const uint8_t (&data)[8] = p_frame->data.u8;
-
-	// Check if response is from synchronous can message
-	if (can_message_buffer.status == 0xff && p_frame->MsgID == (can_message_buffer.id + 0x08))
-	{
-		// Store message bytes so that the async method can continue
-		can_message_buffer.status = 3;
-
-		std::copy(std::begin(data), std::end(data), std::begin(can_message_buffer.byte));
-	}
-
-	// set batt temp
-	switch (p_frame->MsgID)
-	{
-	case 0x488:
-	{
-		StdMetrics.ms_v_pos_odometer->SetValue((int)CAN_UINT24(0) / 10, Kilometers);
-		break;
-	}
-	case 0x347:
-	{
-		StdMetrics.ms_v_env_awake->SetValue(CAN_BIT(0, 6));
-		break;
-	}
-	case 0x23a:
-	{
-		StdMetrics.ms_v_door_fl->SetValue(CAN_BIT(1, 3));
-		StdMetrics.ms_v_door_fr->SetValue(CAN_BIT(1, 4));
-		StdMetrics.ms_v_door_rr->SetValue(CAN_BIT(1, 5));
-		StdMetrics.ms_v_door_rl->SetValue(CAN_BIT(1, 6));
-		break;
-	}
-	case 0x380:
-	{
-		StdMetrics.ms_v_bat_soc->SetValue(CAN_BYTE(0), Percentage);
-		if (CAN_BIT(1, 2) && !CAN_BIT(1, 3))
-		{
-			StdMetrics.ms_v_charge_inprogress->SetValue(true);
-		}
-		else
-		{
-			StdMetrics.ms_v_charge_inprogress->SetValue(false);
-		}
-		break;
-	}
-	case 0x490:
-	{
-		StdMetrics.ms_v_env_locked->SetValue(CAN_BIT(0, 2));
-		break;
-	}
-	case 0x0a0:
-	{
-		// (it doesnt show the same speed as in the screen but it is close, a little less when going slow and a little more when going fast)
-		StdMetrics.ms_v_pos_speed->SetValue((int)CAN_UINT(6) / 93, Kph);
-		break;
-	}
-	default:
-		break;
-	}	
-
 	}
 
 
