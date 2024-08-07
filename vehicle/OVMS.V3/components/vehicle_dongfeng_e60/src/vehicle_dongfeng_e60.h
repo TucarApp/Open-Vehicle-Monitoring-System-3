@@ -37,7 +37,6 @@ class OvmsVehicleDFE60 : public OvmsVehicle
 
     void IncomingFrameCan1(CAN_frame_t *p_frame) override;
     void Ticker1(uint32_t ticker) override;
-    void Ticker300(uint32_t ticker) override;
 
     vehicle_command_t CommandLock(const char *pin) override;
     vehicle_command_t CommandUnlock(const char *pin) override;

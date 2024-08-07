@@ -1,40 +1,12 @@
 /*
 ;    Project:       Open Vehicle Monitor System
-;    Date:          21th January 2019
+;    Date:          7th August 2024
 ;
 ;    Changes:
-;    0.0.1  Initial stub
-;			- Ported from Kia Soul. Totally untested.
+;    0.0.1  Initial submit. 
+;			- DongFeng E60. Totally untested.
 ;
-;    0.1.0  First version on par with Soul
-;			- First "complete" version.
-;
-;		0.1.1 06-apr-2019 - Geir Øyvind Vælidalo
-;			- Minor changes after proper real life testing
-;			- VIN is working
-;			- Removed more of the polling when car is off in order to prevent AUX battery drain
-;
-;		0.1.2 10-apr-2019 - Geir Øyvind Vælidalo
-;			- Fixed TPMS reading
-;			- Fixed xks aux
-;			- Estimated range show WLTP in lack of the actual displayed range
-;			- Door lock works even after ECU goes to sleep.
-;
-;		0.1.3 12-apr-2019 - Geir Øyvind Vælidalo
-;			- Fixed OBC temp reading
-;			- Removed a couple of pollings when car is off, in order to save AUX battery
-;			- Added range calculator for estimated range instead of WLTP. It now uses 20 last trips as a basis.
-;
-;		0.1.5 18-apr-2019 - Geir Øyvind Vælidalo
-;			- Changed poll frequencies to minimize the strain on the CAN-write function.
-;
-;		0.1.6 20-apr-2019 - Geir Øyvind Vælidalo
-;			- AUX Battery monitor..
-;
-;    (C) 2011       Michael Stegen / Stegen Electronics
-;    (C) 2011-2017  Mark Webb-Johnson
-;    (C) 2011       Sonny Chen @ EPRO/DX
-;    (C) 2019       Geir Øyvind Vælidalo <geir@validalo.net>
+;    (C) 2011       Axel Troncoso / Tucar
 ;;
 ; Permission is hereby granted, free of charge, to any person obtaining a copy
 ; of this software and associated documentation files (the "Software"), to deal
@@ -92,7 +64,7 @@
 #define POLLSTATE_CHARGING     PollSetState(2);
 
 
-static const char *TAG = "v-dfe60";
+static const char *TAG = "v-dongfengE60";
 
 
 OvmsVehicleDFE60::OvmsVehicleDFE60()
@@ -118,10 +90,6 @@ OvmsVehicleDFE60::~OvmsVehicleDFE60()
 	}
 
 void OvmsVehicleDFE60::Ticker1(uint32_t ticker)
-	{
-	}
-
-void OvmsVehicleDFE60::Ticker300(uint32_t ticker)
 	{
 	}
 
