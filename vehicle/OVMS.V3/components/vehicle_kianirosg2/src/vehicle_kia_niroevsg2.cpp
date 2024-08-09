@@ -324,22 +324,6 @@ void OvmsVehicleKiaNiroEvSg2::IncomingBCM(canbus *bus, uint16_t type, uint16_t p
 						StdMetrics.ms_v_tpms_pressure->SetElemValue(MS_V_TPMS_IDX_RR, bVal / 5.0, PSI);
 				}
 				break;
-
-			case 0xB010:
-				if (mlframe == 1)
-				{
-					bVal = CAN_BYTE(1);
-					/* TODO: manage windows_open*/
-					if (bVal > 0)
-					{
-						// windows_open = true;
-					}
-					else
-					{
-						// windows_open = false;
-					}
-				}
-				break;
 			}
 		}
 	}
