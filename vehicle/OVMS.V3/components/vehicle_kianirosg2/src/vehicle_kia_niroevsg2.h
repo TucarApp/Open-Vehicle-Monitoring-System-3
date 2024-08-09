@@ -31,9 +31,6 @@
 
 #include "../../vehicle_kiasoulev/src/kia_common.h"
 #include "vehicle.h"
-#ifdef CONFIG_OVMS_COMP_WEBSERVER
-#include "ovms_webserver.h"
-#endif
 
 
 using namespace std;
@@ -65,40 +62,19 @@ class OvmsVehicleKiaNiroEvSg2 : public KiaVehicle
     					uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
 						  uint8_t b5, uint8_t b6, uint8_t mode);
 
-    OvmsVehicle::vehicle_command_t CommandLock(const char* pin) override;
-    OvmsVehicle::vehicle_command_t CommandUnlock(const char* pin) override;
-
   protected:
     void HandleCharging();
     void HandleChargeStop();
-    void IncomingOBC(canbus* bus, uint16_t type, uint16_t pid, const uint8_t* data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
-    void IncomingVMCU(canbus* bus, uint16_t type, uint16_t pid, const uint8_t* data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
-    void IncomingMCU(canbus* bus, uint16_t type, uint16_t pid, const uint8_t* data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
+    void IncomingVMCU(canbus *bus, uint16_t type, uint16_t pid, const uint8_t *data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
     void IncomingBMC(canbus* bus, uint16_t type, uint16_t pid, const uint8_t* data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
     void IncomingBCM(canbus* bus, uint16_t type, uint16_t pid, const uint8_t* data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
     void IncomingIGMP(canbus* bus, uint16_t type, uint16_t pid, const uint8_t* data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
     void IncomingCM(canbus* bus, uint16_t type, uint16_t pid, const uint8_t* data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
-    bool SetDoorLock(bool open, const char* password);
+    void IncomingSW(canbus* bus, uint16_t type, uint16_t pid, const uint8_t* data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
     void SetChargeMetrics(float voltage, float current, float climit, bool ccs);
     void SendTesterPresentMessages();
     void StopTesterPresentMessages();
 
-
-#ifdef CONFIG_OVMS_COMP_WEBSERVER
-    // --------------------------------------------------------------------------
-    // Webserver subsystem
-    //  - implementation: ks_web.(h,cpp)
-    //
-  public:
-    virtual void
-    WebInit();
-    static void WebCfgFeatures(PageEntry_t &p, PageContext_t &c);
-    static void WebCfgBattery(PageEntry_t &p, PageContext_t &c);
-    static void WebBattMon(PageEntry_t &p, PageContext_t &c);
-
-  public:
-    void GetDashboardConfig(DashboardConfig &cfg);
-#endif //CONFIG_OVMS_COMP_WEBSERVER
   };
 
 #endif //#ifndef __VEHICLE_KIANIROEVSG2_H__
