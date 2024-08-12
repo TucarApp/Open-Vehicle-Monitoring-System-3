@@ -80,6 +80,30 @@ static const OvmsPoller::poll_pid_t vehicle_kianiroevsg2_polls_stop[] = {POLL_LI
 OvmsVehicleKiaNiroEvSg2::OvmsVehicleKiaNiroEvSg2()
   {
   ESP_LOGI(TAG, "Kia Sg2 EV vehicle module");
+
+  kia_send_can.id = 0;
+  kia_send_can.status = 0;
+  memset(kia_send_can.byte, 0, sizeof(kia_send_can.byte));
+
+	// init metrics:
+	m_v_door_lock_fl = MyMetrics.InitBool("xkn.v.door.lock.front.left", 10, 0);
+	m_v_door_lock_fr = MyMetrics.InitBool("xkn.v.door.lock.front.right", 10, 0);
+	m_v_door_lock_rl = MyMetrics.InitBool("xkn.v.door.lock.rear.left", 10, 0);
+	m_v_door_lock_rr = MyMetrics.InitBool("xkn.v.door.lock.rear.right", 10, 0);
+
+	StdMetrics.ms_v_bat_12v_voltage->SetValue(12.5, Volts);
+	StdMetrics.ms_v_charge_inprogress->SetValue(false);
+	StdMetrics.ms_v_env_on->SetValue(false);
+	StdMetrics.ms_v_bat_temp->SetValue(20, Celcius);
+
+	// Require GPS.
+	MyEvents.SignalEvent("vehicle.require.gps", NULL);
+	MyEvents.SignalEvent("vehicle.require.gpstime", NULL);
+
+	PollSetThrottling(6);
+	RegisterCanBus(1, CAN_MODE_ACTIVE, CAN_SPEED_500KBPS);
+	POLLSTATE_OFF;
+	PollSetPidList(m_can1, vehicle_kianiroevsg2_polls);
   }
 
 /**
