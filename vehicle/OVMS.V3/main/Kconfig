@@ -600,6 +600,13 @@ config OVMS_VEHICLE_BYD_ATTO3
     depends on OVMS_COMP_POLLER
     help
         Enable support for BYD Atto 3
+config OVMS_VEHICLE_KIANIROEVSG2
+    bool "Include support for Kia Niro EV SG2"
+    default y
+    depends on OVMS
+    depends on OVMS_COMP_POLLER
+    help
+        Enable support for Kia Niro EV SG2
 
 config OVMS_VEHICLE_DONGFENG_E60
     bool "Include support for Dong Feng E60"
