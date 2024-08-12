@@ -44,8 +44,6 @@ class OvmsVehicleKiaNiroEvSg2 : public KiaVehicle
   public:
     void IncomingFrameCan1(CAN_frame_t *p_frame) override;
     void Ticker1(uint32_t ticker) override;
-    void Ticker10(uint32_t ticker) override;
-    void Ticker300(uint32_t ticker) override;
     void IncomingPollReply(const OvmsPoller::poll_job_t &job, uint8_t *data, uint8_t length) override;
     void SendTesterPresent(uint16_t id, uint8_t length);
     bool SetSessionMode(uint16_t id, uint8_t mode);
@@ -63,17 +61,33 @@ class OvmsVehicleKiaNiroEvSg2 : public KiaVehicle
 						  uint8_t b5, uint8_t b6, uint8_t mode);
 
   protected:
-    void HandleCharging();
-    void HandleChargeStop();
     void IncomingVMCU(canbus *bus, uint16_t type, uint16_t pid, const uint8_t *data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
     void IncomingBMC(canbus* bus, uint16_t type, uint16_t pid, const uint8_t* data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
     void IncomingBCM(canbus* bus, uint16_t type, uint16_t pid, const uint8_t* data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
     void IncomingIGMP(canbus* bus, uint16_t type, uint16_t pid, const uint8_t* data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
     void IncomingCM(canbus* bus, uint16_t type, uint16_t pid, const uint8_t* data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
     void IncomingSW(canbus* bus, uint16_t type, uint16_t pid, const uint8_t* data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
-    void SetChargeMetrics(float voltage, float current, float climit, bool ccs);
     void SendTesterPresentMessages();
     void StopTesterPresentMessages();
+  
+  private:
+
+    enum class PollState
+      {
+        OFF,
+        RUNNING,
+        CHARGING
+      };
+
+    void HandleCharging();
+    void HandleChargeStop();
+    void HandleCarOn();
+    void HandleCarOff();
+
+    void SetChargeType();
+    void ResetChargeType();
+
+    PollState GetPollState();
 
   };
 

@@ -90,25 +90,83 @@ OvmsVehicleKiaNiroEvSg2::~OvmsVehicleKiaNiroEvSg2()
 	ESP_LOGI(TAG, "Shutdown Kia Sg2 EV vehicle module");
   }
 
+OvmsVehicleKiaNiroEvSg2::PollState OvmsVehicleKiaNiroEvSg2::GetPollState()
+	{
+	switch (m_poll_state)
+		{
+		case 0:
+			return PollState::OFF;
+		case 1:
+			return PollState::RUNNING;
+		case 2:
+			return PollState::CHARGING;
+		default:
+			assert (false);
+			return PollState::OFF;
+		}
+	}
+
 /**
  * Ticker1: Called every second
  */
 void OvmsVehicleKiaNiroEvSg2::Ticker1(uint32_t ticker)
 	{
-	}
+	/* Register car as locked, only if all doors are locked. */
+	StdMetrics.ms_v_env_locked->SetValue(
+		m_v_door_lock_fr->AsBool() &&
+		m_v_door_lock_fl->AsBool() &&
+		m_v_door_lock_rr->AsBool() &&
+		m_v_door_lock_rl->AsBool());
+	
+	/* Set batery power */
+	StdMetrics.ms_v_bat_power->SetValue(
+		StdMetrics.ms_v_bat_voltage->AsFloat(400, Volts) *
+			StdMetrics.ms_v_bat_current->AsFloat(1, Amps) / 1000,
+		kW);
+	
+	/* Set charge status */
+	StdMetrics.ms_v_charge_inprogress->SetValue(
+		(StdMetrics.ms_v_pos_speed->AsFloat(0) < 1) &
+		(StdMetrics.ms_v_bat_power->AsFloat(0, kW) < -1));
+	
+	auto vehicle_on = (bool) StdMetrics.ms_v_env_on->AsBool();
+	auto vehicle_charging = (bool) StdMetrics.ms_v_charge_inprogress->AsBool();
+	
+	/* Define next state. */
+	auto to_run = vehicle_on && !vehicle_charging;
+	auto to_charge = vehicle_charging;
+	auto to_off = !vehicle_on && !vehicle_charging;
 
-/**
- * Ticker10: Called every ten seconds
- */
-void OvmsVehicleKiaNiroEvSg2::Ticker10(uint32_t ticker)
-	{
-	}
+	/* There may be only one next state. */
+	assert(to_run + to_charge + to_off == 1);
+	
+	/* Run actions depending on state. */
+	auto poll_state = GetPollState();
+	switch (poll_state)
+		{
+		case PollState::OFF:
+			if (to_run)
+				HandleCarOn();
+			else if (to_charge)
+				HandleCharging();
+		case PollState::RUNNING:
+			if (to_off)
+				HandleCarOff();
+			else if (to_charge)
+				HandleCharging();
+		case PollState::CHARGING:
+			if (to_off)
+				{
+				HandleChargeStop();
+				HandleCarOff();
+				}
+			else if (to_run)
+				{
+				HandleChargeStop();
+				HandleCarOn();
+				}
+		}
 
-/**
- * Ticker300: Called every five minutes
- */
-void OvmsVehicleKiaNiroEvSg2::Ticker300(uint32_t ticker)
-	{
 	}
 
 /**
@@ -116,20 +174,54 @@ void OvmsVehicleKiaNiroEvSg2::Ticker300(uint32_t ticker)
  */
 void OvmsVehicleKiaNiroEvSg2::HandleCharging()
 	{
+	POLLSTATE_CHARGING;
+	ESP_LOGI(TAG, "CAR IS CHARGING | POLLSTATE CHARGING");
+
+	SetChargeType();
 	}
 
 /**
  * Update metrics when charging stops
  */
 void OvmsVehicleKiaNiroEvSg2::HandleChargeStop()
-	{
+	{	
+	ESP_LOGI(TAG, "CAR CHARGING STOPPED");
+	ResetChargeType();
 	}
 
 /**
- *  Sets the charge metrics
+ * Update metrics when car is turned on
  */
-void OvmsVehicleKiaNiroEvSg2::SetChargeMetrics(float voltage, float current, float climit, bool ccs)
+void OvmsVehicleKiaNiroEvSg2::HandleCarOn()
 	{
+	POLLSTATE_RUNNING;
+	ESP_LOGI(TAG, "CAR IS ON | POLLSTATE RUNNING");
+	}
+
+/**
+ * Update metrics when car is turned off
+ */
+void OvmsVehicleKiaNiroEvSg2::HandleCarOff()
+	{
+	POLLSTATE_OFF;
+	ESP_LOGI(TAG, "CAR IS OFF | POLLSTATE OFF");
+	}
+
+/**
+ *  Sets the charger type
+ */
+void OvmsVehicleKiaNiroEvSg2::SetChargeType()
+	{
+	auto using_css = StdMetrics.ms_v_bat_power->AsFloat(0, kW) < -15;
+	StdMetrics.ms_v_charge_type->SetValue(using_css ? "CCS" : "Type2");
+	}
+
+/**
+ * Resets the charges type
+ */
+void OvmsVehicleKiaNiroEvSg2::ResetChargeType()
+	{
+	StdMetrics.ms_v_charge_type->SetValue("");
 	}
 
 /**
@@ -162,8 +254,6 @@ void OvmsVehicleKiaNiroEvSg2::IncomingFrameCan1(CAN_frame_t* p_frame)
  */
 void OvmsVehicleKiaNiroEvSg2::IncomingPollReply(const OvmsPoller::poll_job_t &job, uint8_t *data, uint8_t length)
 	{
-	// ESP_LOGD(TAG, "IPR %03x TYPE:%x PID:%02x %x %02x %02x %02x %02x %02x %02x %02x %02x", job.moduleid_rec, type, pid, length, data[0], data[1], data[2], data[3],
-	//	data[4], data[5], data[6], data[7]);
 	switch (job.moduleid_rec)
 		{
 		// ****** IGMP *****
