@@ -35,6 +35,7 @@
 using namespace std;
 
 class OvmsVehicleMaple60S : public OvmsVehicle
+<<<<<<< HEAD
 {
 public:
   OvmsVehicleMaple60S();
@@ -47,5 +48,23 @@ public:
 private:
   std::array<bool, 4> m_door_lock_status;
 };
+=======
+  {
+  public:
+		OvmsVehicleMaple60S();
+    ~OvmsVehicleMaple60S();
+
+  public:
+    void IncomingFrameCan1(CAN_frame_t *p_frame) override;
+    void Ticker1(uint32_t ticker) override;
+
+  private:
+    struct {
+      uint8_t byte[8];
+      uint8_t status;
+      uint16_t id;
+    } send_can_buffer;
+  };
+>>>>>>> 1283e337 (Feat(support-for-door-status-on-maple))
 
 #endif // #ifndef __VEHICLE_MAPLE60S_H__
