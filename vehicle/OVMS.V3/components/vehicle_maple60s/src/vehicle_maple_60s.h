@@ -64,6 +64,8 @@ private:
       uint8_t status;
       uint16_t id;
     } send_can_buffer;
+
+    std::array<bool, 4> m_door_lock_status;
   };
 >>>>>>> 1283e337 (Feat(support-for-door-status-on-maple))
 
