@@ -38,7 +38,7 @@ using namespace std;
 class OvmsVehicleKiaNiroEvSg2 : public KiaVehicle
   {
   public:
-		OvmsVehicleKiaNiroEvSg2();
+    OvmsVehicleKiaNiroEvSg2();
     ~OvmsVehicleKiaNiroEvSg2();
 
   public:
@@ -48,17 +48,17 @@ class OvmsVehicleKiaNiroEvSg2 : public KiaVehicle
     void SendTesterPresent(uint16_t id, uint8_t length);
     bool SetSessionMode(uint16_t id, uint8_t mode);
     void SendCanMessage(uint16_t id, uint8_t count,
-						uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
-						uint8_t b5, uint8_t b6);
+            uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
+            uint8_t b5, uint8_t b6);
     void SendCanMessageTriple(uint16_t id, uint8_t count,
-						uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
-						uint8_t b5, uint8_t b6);
+            uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
+            uint8_t b5, uint8_t b6);
     bool SendCanMessage_sync(uint16_t id, uint8_t count,
-    					uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
-						uint8_t b5, uint8_t b6);
+              uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
+            uint8_t b5, uint8_t b6);
     bool SendCommandInSessionMode(uint16_t id, uint8_t count,
-    					uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
-						  uint8_t b5, uint8_t b6, uint8_t mode);
+              uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
+              uint8_t b5, uint8_t b6, uint8_t mode);
 
   protected:
     void IncomingVMCU(canbus *bus, uint16_t type, uint16_t pid, const uint8_t *data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
