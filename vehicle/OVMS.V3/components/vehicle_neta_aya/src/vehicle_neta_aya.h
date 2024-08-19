@@ -45,7 +45,7 @@ class OvmsVehicleNetaAya : public OvmsVehicle
       CHARGING = 2
     };
 
-		OvmsVehicleNetaAya();
+    OvmsVehicleNetaAya();
     ~OvmsVehicleNetaAya();
 
   public:
@@ -55,14 +55,14 @@ class OvmsVehicleNetaAya : public OvmsVehicle
     void IncomingPollReply(const OvmsPoller::poll_job_t &job, uint8_t *data, uint8_t length) override;
 
     void SendCanMessage(uint16_t id, uint8_t count,
-						uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
-						uint8_t b5, uint8_t b6);
+            uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
+            uint8_t b5, uint8_t b6);
     void SendCanMessageSecondary(uint16_t id, uint8_t count,
                         uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
                         uint8_t b5, uint8_t b6);
     void SendCanMessageTriple(uint16_t id, uint8_t count,
-						uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
-						uint8_t b5, uint8_t b6);
+            uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
+            uint8_t b5, uint8_t b6);
 
   private:
     void HandleCharging();
