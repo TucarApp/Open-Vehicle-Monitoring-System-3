@@ -37,6 +37,8 @@ gitGraph
    branch tucar/feat/feat_a
    commit
    commit
+   checkout tardis
+   merge master
    checkout openvehicles
    merge tucar/feat/feat_a
    checkout tardis
@@ -57,6 +59,8 @@ gitGraph
    checkout tucar/feat/feat_b
    commit
    commit
+   checkout tardis
+   merge master
    checkout openvehicles
    commit
    commit
@@ -73,9 +77,8 @@ gitGraph
    checkout openvehicles
    commit
    commit
-   checkout master-internal
-   commit
-   merge openvehicles
+   checkout tardis
+   merge master
    checkout openvehicles
    commit
    commit
@@ -83,4 +86,6 @@ gitGraph
    merge openvehicles
    checkout openvehicles
    commit
+   checkout master-internal
+   merge tardis
 ```
