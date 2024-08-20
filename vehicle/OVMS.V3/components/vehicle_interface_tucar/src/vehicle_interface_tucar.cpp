@@ -27,5 +27,13 @@
 ; THE SOFTWARE.
 */
 
+#include "vehicle_interface_tucar.h"
+
 #include "ovms_log.h"
+
 static const char *TAG = "v-iface-tucar";
+
+void OvmsVehicleInterfaceTucar::Ticker1(uint32_t ticker)
+{
+  ESP_LOGI(TAG, "Ticker1: %d", ticker);
+}

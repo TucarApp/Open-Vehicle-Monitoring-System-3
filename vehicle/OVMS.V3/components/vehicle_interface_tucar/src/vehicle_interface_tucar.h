@@ -34,6 +34,8 @@
 
 class OvmsVehicleInterfaceTucar : public OvmsVehicle
 {
+protected:
+  virtual void Ticker1(uint32_t ticker) override;
 };
 
 #endif //#ifndef __VEHICLE_INTERFACE_TUCAR_H__
