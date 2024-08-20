@@ -415,6 +415,7 @@ OvmsNetManager::OvmsNetManager()
   //   dns                Space-separated list of DNS servers
   //   wifi.sq.good       Threshold for usable wifi signal [dBm], default -87
   //   wifi.sq.bad        Threshold for unusable wifi signal [dBm], default -89
+  StdMetrics.ms_m_net_ip->SetValue(false);
 
 #ifdef CONFIG_OVMS_COMP_WIFI
   MyMetrics.RegisterListener(TAG, MS_N_WIFI_SQ, std::bind(&OvmsNetManager::WifiStaCheckSQ, this, _1));
