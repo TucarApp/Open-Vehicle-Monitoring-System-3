@@ -872,7 +872,6 @@ void OvmsNetManager::PrioritiseAndIndicate()
 
 void OvmsNetManager::DoSafePrioritiseAndIndicate()
   {
-  ESP_LOGE(TAG, "DoSafePrioritiseAndIndicate");
   const char *search = NULL;
   ip_addr_t* dns = NULL;
 
@@ -903,7 +902,7 @@ void OvmsNetManager::DoSafePrioritiseAndIndicate()
     }
   StdMetrics.ms_m_net_ip->SetValue(m_has_ip);
 
-    if (search == NULL)
+  if (search == NULL)
     {
     SetNetType("none");
     return;
