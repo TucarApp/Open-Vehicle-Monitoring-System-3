@@ -415,7 +415,6 @@ OvmsNetManager::OvmsNetManager()
   //   dns                Space-separated list of DNS servers
   //   wifi.sq.good       Threshold for usable wifi signal [dBm], default -87
   //   wifi.sq.bad        Threshold for unusable wifi signal [dBm], default -89
-  StdMetrics.ms_m_net_ip->SetValue(false);
 
 #ifdef CONFIG_OVMS_COMP_WIFI
   MyMetrics.RegisterListener(TAG, MS_N_WIFI_SQ, std::bind(&OvmsNetManager::WifiStaCheckSQ, this, _1));
@@ -503,7 +502,6 @@ void OvmsNetManager::WifiDisconnect()
 void OvmsNetManager::WifiStaGotIP(std::string event, void* data)
   {
   m_wifi_sta = true;
-  StdMetrics.ms_m_net_ip->SetValue(true);
   ESP_LOGI(TAG, "WIFI client got IP");
   SaveDNSServer(m_dns_wifi);
 
@@ -523,7 +521,6 @@ void OvmsNetManager::WifiStaLostIP(std::string event, void* data)
   // Re-prioritise, just in case, as Wifi stack seems to mess with this
   // (in particular if an AP interface is up, and STA goes down, Wifi
   // stack seems to switch default interface to AP)
-  StdMetrics.ms_m_net_ip->SetValue(false);
   PrioritiseAndIndicate();
   #ifdef CONFIG_OVMS_SC_GPL_MONGOOSE
     ScheduleCleanup();
@@ -875,6 +872,7 @@ void OvmsNetManager::PrioritiseAndIndicate()
 
 void OvmsNetManager::DoSafePrioritiseAndIndicate()
   {
+  ESP_LOGE(TAG, "DoSafePrioritiseAndIndicate");
   const char *search = NULL;
   ip_addr_t* dns = NULL;
 
@@ -905,7 +903,7 @@ void OvmsNetManager::DoSafePrioritiseAndIndicate()
     }
   StdMetrics.ms_m_net_ip->SetValue(m_has_ip);
 
-  if (search == NULL)
+    if (search == NULL)
     {
     SetNetType("none");
     return;
