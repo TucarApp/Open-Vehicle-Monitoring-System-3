@@ -63,8 +63,6 @@
 #define MS_N_MDM_MODE               "m.net.mdm.mode"
 #define MS_N_WIFI_NETWORK           "m.net.wifi.network"
 #define MS_N_WIFI_SQ                "m.net.wifi.sq"
-#define MS_N_CONNECTED              "m.net.connected"
-#define MS_N_IP                     "m.net.ip"
 
 #ifdef CONFIG_OVMS_COMP_MAX7317
 #define MS_M_EGPIO_INPUT            "m.egpio.input"
