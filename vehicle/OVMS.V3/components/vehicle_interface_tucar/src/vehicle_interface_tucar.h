@@ -34,8 +34,16 @@
 
 class OvmsVehicleInterfaceTucar : public OvmsVehicle
 {
+public:
+  OvmsVehicleInterfaceTucar();
+  virtual ~OvmsVehicleInterfaceTucar() = default;
+
 protected:
   virtual void Ticker1(uint32_t ticker) override;
+
+private:
+  const std::string imei;
+
 };
 
 #endif //#ifndef __VEHICLE_INTERFACE_TUCAR_H__
