@@ -65,6 +65,8 @@ class modem : public pcp, public InternalRamAllocated
     int m_txpin;
     int m_pwregpio;
     int m_dtregpio;
+    std::string m_pos_imei;
+    int m_pos_imei_counter;
 
   public:
     typedef enum
