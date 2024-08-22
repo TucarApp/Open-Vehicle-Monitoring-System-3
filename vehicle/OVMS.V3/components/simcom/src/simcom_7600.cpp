@@ -227,6 +227,9 @@ modem::modem_state1_t simcom7600::State1Ticker1(modem::modem_state1_t curstate)
       case 12:
         m_modem->tx("AT+CGMR;+ICCID\r\n");
         break;
+      case 14:
+        m_modem->tx("AT+GSN;+GSN;+GSN;+GSN\r\n");
+        break;
       case 20:
         // start MUX mode, route URCs to MUX channel 3 (POLL)
         // Note: NMEA URCs will now also be sent on channel 3 by the SIMCOM 7600;
