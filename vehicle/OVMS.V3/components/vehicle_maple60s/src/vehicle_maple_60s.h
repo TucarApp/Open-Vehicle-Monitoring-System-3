@@ -30,11 +30,9 @@
 #ifndef __VEHICLE_MAPLE60S_H__
 #define __VEHICLE_MAPLE60S_H__
 
-#include "vehicle.h"
+#include "vehicle_interface_tucar.h"
 
-using namespace std;
-
-class OvmsVehicleMaple60S : public OvmsVehicle
+class OvmsVehicleMaple60S : public OvmsVehicleInterfaceTucar
 {
 public:
   OvmsVehicleMaple60S();
