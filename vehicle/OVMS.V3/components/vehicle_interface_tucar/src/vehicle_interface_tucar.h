@@ -1,4 +1,4 @@
-/*
+t/*
 ;    Project:       Open Vehicle Monitor System
 ;    Date:          20th August 2024
 ;
@@ -32,6 +32,7 @@
 
 #include "vehicle.h"
 
+
 class OvmsVehicleInterfaceTucar : public OvmsVehicle
 {
 public:
@@ -43,6 +44,7 @@ protected:
 
 private:
   const std::string imei;
+  boost::optional<std::string> imei;
 
 };
 
