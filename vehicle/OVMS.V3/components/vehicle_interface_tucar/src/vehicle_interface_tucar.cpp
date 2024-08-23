@@ -186,15 +186,6 @@ OvmsVehicleInterfaceTucar::OvmsVehicleInterfaceTucar()
 
 void OvmsVehicleInterfaceTucar::Ticker1(uint32_t ticker)
 {
-  ESP_LOGI(TAG, "Ticker1: %d", ticker);
-  if (hasImei())
-  {
-    ESP_LOGI(TAG, "IMEI: %s", getImei().c_str());
-  }
-  else
-  {
-    ESP_LOGI(TAG, "IMEI not set");
-  }
 }
 
 bool OvmsVehicleInterfaceTucar::hasImei() const
