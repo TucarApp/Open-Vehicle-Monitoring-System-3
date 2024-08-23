@@ -24,10 +24,9 @@
 #ifndef __VEHICLE_DONGFENGE60_H__
 #define __VEHICLE_DONGFENGE60_H__
 
-#include "vehicle.h"
+#include "vehicle_interface_tucar.h"
 
-
-class OvmsVehicleDFE60 : public OvmsVehicle
+class OvmsVehicleDFE60 : public OvmsVehicleInterfaceTucar
   {
   public:
 		OvmsVehicleDFE60();
