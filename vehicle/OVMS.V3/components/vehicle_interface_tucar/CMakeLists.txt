@@ -1,7 +1,7 @@
 set(srcs)
 set(include_dirs)
 
-list(APPEND srcs "vehicle_interfcae_tucar.cpp")
+list(APPEND srcs "vehicle_interface_tucar.cpp")
 list(APPEND include_dirs "src")
 
 # requirements can't depend on config
