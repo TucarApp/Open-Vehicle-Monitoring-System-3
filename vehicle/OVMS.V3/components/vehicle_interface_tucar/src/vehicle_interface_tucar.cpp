@@ -36,6 +36,7 @@
 #include <utility>
 
 #include "ovms_config.h"
+#include "ovms_peripherals.h"
 #include "ovms_log.h"
 #include "ovms_metrics.h"
 
@@ -153,6 +154,11 @@ void setParamConfigMap(const ParamMap<T>& paramMap)
   }
 }
 
+void requestModemImei()
+{
+  MyPeripherals->m_cellular_modem->tx("AT+GSN;+GSN;+GSN;+GSN\r\n");
+}
+
 } // namespace
 
 
@@ -172,11 +178,23 @@ OvmsVehicleInterfaceTucar::OvmsVehicleInterfaceTucar()
       this,
       std::placeholders::_1,
       std::placeholders::_2));
+  
+  /* Set imei if it has already been registered. */
+  auto imeiValue = MyMetrics.Find("m.net.mdm.imei")->AsString();
+  if (!imeiValue.empty()) setImei(imeiValue);
 }
 
 void OvmsVehicleInterfaceTucar::Ticker1(uint32_t ticker)
 {
   ESP_LOGI(TAG, "Ticker1: %d", ticker);
+  if (hasImei())
+  {
+    ESP_LOGI(TAG, "IMEI: %s", getImei().c_str());
+  }
+  else
+  {
+    ESP_LOGI(TAG, "IMEI not set");
+  }
 }
 
 bool OvmsVehicleInterfaceTucar::hasImei() const
@@ -196,11 +214,8 @@ void OvmsVehicleInterfaceTucar::setImei(const std::string& imei)
 
 void OvmsVehicleInterfaceTucar::modemReceivedImei(std::string event, void* data)
 {
+  ESP_LOGI(TAG, "Received IMEI from modem");
   auto imeiValue = MyMetrics.Find("m.net.mdm.imei")->AsString();
-  setImei(imeiValue);
-  // auto imeiValue = "000000000000001";
-  // setImei(imeiValue);
-  // auto imeiValue = MyConfig->GetParamValue("modem", "imei");
-
+  if (!imeiValue.empty()) setImei(imeiValue);
 }
 

@@ -65,10 +65,11 @@ public:
   OvmsVehicleInterfaceTucar();
   virtual ~OvmsVehicleInterfaceTucar() = default;
 
-protected:
-  virtual void Ticker1(uint32_t ticker) override;
   bool hasImei() const;
   std::string getImei() const;
+
+protected:
+  virtual void Ticker1(uint32_t ticker) override;
 
 private:
   void modemReceivedImei(std::string event, void* data);
