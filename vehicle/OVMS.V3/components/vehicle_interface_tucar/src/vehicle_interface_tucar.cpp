@@ -47,16 +47,50 @@ using ParamMap = std::unordered_map<std::string, std::pair<std::string, T>>;
 
 static const ParamMap<std::string> defaultStringParams = {
   {"module", {"init", "done"}},
-  {"password", {"module", "abc123"}},
-  {"modem", {"apn", "help.help.cl"}},
+  {"auto", {"vehicle.type", "MPL60S"}},
+  {"auto", {"wifi.mode", "client"}},
+  {"log", {"level", "error"}},
+  {"vehicle", {"units.accel", "kmphps"}},
+  {"vehicle", {"units.accelshort", "mpss"}},
+  {"vehicle", {"units.charge", "", "amphours"}},
+  {"vehicle", {"units.consumption", "", "kmpkwh"}},
+  {"vehicle", {"units.distance", "", "K"}},
+  {"vehicle", {"units.distanceshort", "", "meters"}},
+  {"vehicle", {"units.energy", "", "kwh"}},
+  {"vehicle", {"units.power", "", "kw"}},
+  {"vehicle", {"units.pressure", "", "kpa"}},
+  {"vehicle", {"units.ratio", "", "percent"}},
+  {"vehicle", {"units.signal", "", "dbm"}},
+  {"vehicle", {"units.speed", "", "kmph"}},
+  {"vehicle", {"units.temp", "", "celcius"}}
 };
 
 static const ParamMap<bool> defaultBoolParams = {
   {"auto", {"modem", true}},
+  {"auto", {"dbc", false}},
+  {"auto", {"egpio", true}},
+  {"auto", {"ext12v", false}},
+  {"auto", {"init", true}},
+  {"auto", {"modem", true}},
+  {"auto", {"ota", false}},
+  {"auto", {"scripting", true}},
+  {"auto", {"server.v2", false}},
+  {"auto", {"server.v3", true}},
+  {"log", {"file.enable", false}},
+  {"modem", {"enable.gps", true}},
+  {"modem", {"enable.gpstime", true}},
+  {"modem", {"enable.net", true}},
+  {"modem", {"enable.sms", true}},
+  {"vehicle", {"bms.alerts.enabled", false}}
 };
 
 static const ParamMap<int> defaultIntParams = {
   {"server.v3", {"updatetime.awake", 1}},
+  {"server.v3", {"updatetime.charging", 5}},
+  {"server.v3", {"updatetime.connected", 1}},
+  {"server.v3", {"updatetime.idle", 60}},
+  {"server.v3", {"updatetime.on", 1}},
+  {"server.v3", {"updatetime.sendall", 300}}
 };
 
 enum class ParamSetResult
