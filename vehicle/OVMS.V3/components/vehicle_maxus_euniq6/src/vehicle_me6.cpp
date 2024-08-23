@@ -157,6 +157,7 @@ void OvmsVehicleMaxe6::IncomingFrameCan1(CAN_frame_t *p_frame)
 
 void OvmsVehicleMaxe6::Ticker1(uint32_t ticker)
 {
+  OvmsVehicleInterfaceTucar::Ticker1(ticker);
 }
 
 class OvmsVehicleMaxe6Init
