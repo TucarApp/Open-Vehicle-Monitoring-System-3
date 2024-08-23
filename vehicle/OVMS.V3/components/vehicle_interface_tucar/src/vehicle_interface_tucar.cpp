@@ -29,6 +29,7 @@
 
 #include "vehicle_interface_tucar.h"
 
+#include <functional>
 #include <string>
 #include <type_traits>
 #include <unordered_map>
@@ -52,17 +53,17 @@ static const ParamMap<std::string> defaultStringParams = {
   {"log", {"level", "error"}},
   {"vehicle", {"units.accel", "kmphps"}},
   {"vehicle", {"units.accelshort", "mpss"}},
-  {"vehicle", {"units.charge", "", "amphours"}},
-  {"vehicle", {"units.consumption", "", "kmpkwh"}},
-  {"vehicle", {"units.distance", "", "K"}},
-  {"vehicle", {"units.distanceshort", "", "meters"}},
-  {"vehicle", {"units.energy", "", "kwh"}},
-  {"vehicle", {"units.power", "", "kw"}},
-  {"vehicle", {"units.pressure", "", "kpa"}},
-  {"vehicle", {"units.ratio", "", "percent"}},
-  {"vehicle", {"units.signal", "", "dbm"}},
-  {"vehicle", {"units.speed", "", "kmph"}},
-  {"vehicle", {"units.temp", "", "celcius"}}
+  {"vehicle", {"units.charge", "amphours"}},
+  {"vehicle", {"units.consumption", "kmpkwh"}},
+  {"vehicle", {"units.distance", "K"}},
+  {"vehicle", {"units.distanceshort", "meters"}},
+  {"vehicle", {"units.energy", "kwh"}},
+  {"vehicle", {"units.power", "kw"}},
+  {"vehicle", {"units.pressure", "kpa"}},
+  {"vehicle", {"units.ratio", "percent"}},
+  {"vehicle", {"units.signal", "dbm"}},
+  {"vehicle", {"units.speed", "kmph"}},
+  {"vehicle", {"units.temp", "celcius"}}
 };
 
 static const ParamMap<bool> defaultBoolParams = {
@@ -98,11 +99,6 @@ enum class ParamSetResult
   Success,
   Fail
 };
-
-std::string getImei()
-{
-  return "000000000000001";
-}
 
 template <typename T>
 ParamSetResult setParamConfig(
@@ -159,19 +155,48 @@ void setParamConfigMap(const ParamMap<T>& paramMap)
 } // namespace
 
 
-OvmsVehicleInterfaceTucar::OvmsVehicleInterfaceTucar() :
-  imei(getImei())
+OvmsVehicleInterfaceTucar::OvmsVehicleInterfaceTucar()
 {
   ESP_LOGI(TAG, "Initialising Tucar Vehicle Interface");
 
   setParamConfigMap(defaultStringParams);
   setParamConfigMap(defaultBoolParams);
   setParamConfigMap(defaultIntParams);
+
+  /* Set imei once modem has received it. */
+  MyEvents.RegisterEvent(
+    TAG, "system.modem.received.imei",
+    std::bind(
+      &OvmsVehicleInterfaceTucar::modemReceivedImei,
+      this,
+      std::placeholders::_1,
+      std::placeholders::_2));
 }
 
 void OvmsVehicleInterfaceTucar::Ticker1(uint32_t ticker)
 {
   ESP_LOGI(TAG, "Ticker1: %d", ticker);
-
-  setParamConfigMap(defaultStringParams);
 }
+
+bool OvmsVehicleInterfaceTucar::hasImei() const
+{
+  return mImei.hasValue();
+}
+
+std::string OvmsVehicleInterfaceTucar::getImei() const
+{
+  return mImei.getValue();
+}
+
+void OvmsVehicleInterfaceTucar::setImei(const std::string& imei)
+{
+  mImei.setValue(imei);
+}
+
+void OvmsVehicleInterfaceTucar::modemReceivedImei(std::string event, void* data)
+{
+  auto imeiValue = "000000000000001";
+  setImei(imeiValue);
+  // auto imeiValue = MyConfig->GetParamValue("modem", "imei");
+}
+

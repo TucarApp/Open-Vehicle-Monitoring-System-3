@@ -1,4 +1,4 @@
-t/*
+/*
 ;    Project:       Open Vehicle Monitor System
 ;    Date:          20th August 2024
 ;
@@ -32,6 +32,32 @@ t/*
 
 #include "vehicle.h"
 
+template<typename T>
+struct Optional
+{
+  Optional() : mHasValue(false) {}
+
+  T getValue() const
+  {
+    assert(mHasValue);
+    return mValue;
+  }
+
+  bool hasValue() const
+  {
+    return mHasValue;
+  }
+
+  void setValue(const T& value)
+  {
+    mValue = value;
+    mHasValue = true;
+  }
+
+private:
+  T mValue;
+  bool mHasValue;
+};
 
 class OvmsVehicleInterfaceTucar : public OvmsVehicle
 {
@@ -41,11 +67,14 @@ public:
 
 protected:
   virtual void Ticker1(uint32_t ticker) override;
+  bool hasImei() const;
+  std::string getImei() const;
 
 private:
-  const std::string imei;
-  boost::optional<std::string> imei;
+  void modemReceivedImei(std::string event, void* data);
+  void setImei(const std::string& imei);
 
+  Optional<std::string> mImei;
 };
 
 #endif //#ifndef __VEHICLE_INTERFACE_TUCAR_H__
