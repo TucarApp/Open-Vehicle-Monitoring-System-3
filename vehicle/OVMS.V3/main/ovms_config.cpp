@@ -1196,10 +1196,10 @@ void OvmsConfigParam::RewriteConfig()
     // in case /store/ovms_config/ is not accesible factory reset.
     // This is a workaround in case config is corrupted
     if (startsWith(path, "/store/ovms_config/"))
-    {
+      {
       ESP_LOGE(TAG, "RewriteConfig: factory reset");
       ExecuteDriverFactoryReset();
-    }
+      }
     }
   else
     {
