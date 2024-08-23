@@ -37,6 +37,7 @@
 
 #include "ovms_config.h"
 #include "ovms_log.h"
+#include "ovms_metrics.h"
 
 static const char *TAG = "v-iface-tucar";
 
@@ -195,8 +196,11 @@ void OvmsVehicleInterfaceTucar::setImei(const std::string& imei)
 
 void OvmsVehicleInterfaceTucar::modemReceivedImei(std::string event, void* data)
 {
-  auto imeiValue = "000000000000001";
+  auto imeiValue = MyMetrics.Find("m.net.mdm.imei")->AsString();
   setImei(imeiValue);
+  // auto imeiValue = "000000000000001";
+  // setImei(imeiValue);
   // auto imeiValue = MyConfig->GetParamValue("modem", "imei");
+
 }
 
