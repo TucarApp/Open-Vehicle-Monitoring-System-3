@@ -154,11 +154,6 @@ void setParamConfigMap(const ParamMap<T>& paramMap)
   }
 }
 
-void requestModemImei()
-{
-  MyPeripherals->m_cellular_modem->tx("AT+GSN;+GSN;+GSN;+GSN\r\n");
-}
-
 } // namespace
 
 
