@@ -1,12 +1,12 @@
 /*
 ;    Project:       Open Vehicle Monitor System
-;    Date:          16th August 2024
+;    Date:          20th August 2024
 ;
 ;    Changes:
-;    1.0  Initial stub
+;    1.0  Initial release
 ;
-;    (C) 2024        Jaime Middleton / Tucar
-;    (C) 2024        Axel Troncoso   / Tucar
+;    (C) 2021       Jaime Middleton / Tucar
+;    (C) 2021       Axel Troncoso   / Tucar
 ;
 ; Permission is hereby granted, free of charge, to any person obtaining a copy
 ; of this software and associated documentation files (the "Software"), to deal
@@ -27,23 +27,53 @@
 ; THE SOFTWARE.
 */
 
-#ifndef __VEHICLE_MAPLE60S_H__
-#define __VEHICLE_MAPLE60S_H__
+#ifndef __VEHICLE_INTERFACE_TUCAR_H__
+#define __VEHICLE_INTERFACE_TUCAR_H__
 
-#include "vehicle_interface_tucar.h"
+#include "vehicle.h"
 
-class OvmsVehicleMaple60S : public OvmsVehicleInterfaceTucar
+template<typename T>
+struct Optional
 {
-public:
-  OvmsVehicleMaple60S();
-  ~OvmsVehicleMaple60S();
+  Optional() : mHasValue(false) {}
 
-public:
-  void IncomingFrameCan1(CAN_frame_t *p_frame) override;
-  void Ticker1(uint32_t ticker) override;
+  T getValue() const
+  {
+    assert(mHasValue);
+    return mValue;
+  }
+
+  bool hasValue() const
+  {
+    return mHasValue;
+  }
+
+  void setValue(const T& value)
+  {
+    mValue = value;
+    mHasValue = true;
+  }
 
 private:
-  std::array<bool, 4> m_door_lock_status;
+  T mValue;
+  bool mHasValue;
 };
 
-#endif // #ifndef __VEHICLE_MAPLE60S_H__
+class OvmsVehicleInterfaceTucar : public OvmsVehicle
+{
+public:
+  OvmsVehicleInterfaceTucar();
+  virtual ~OvmsVehicleInterfaceTucar() = default;
+
+  bool hasImei() const;
+  std::string getImei() const;
+  std::string getId() const;
+
+private:
+  void modemReceivedImei(std::string event, void* data);
+  void setImei(const std::string& imei);
+
+  Optional<std::string> mImei;
+};
+
+#endif //#ifndef __VEHICLE_INTERFACE_TUCAR_H__

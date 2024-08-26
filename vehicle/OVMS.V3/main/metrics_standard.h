@@ -55,6 +55,7 @@
 #define MS_N_GOOD_SQ                "m.net.good.sq"
 #define MS_N_PROVIDER               "m.net.provider"
 #define MS_N_MDM_ICCID              "m.net.mdm.iccid"
+#define MS_N_MDM_IMEI               "m.net.mdm.imei"
 #define MS_N_MDM_MODEL              "m.net.mdm.model"
 #define MS_N_MDM_NETREG             "m.net.mdm.netreg"
 #define MS_N_MDM_NETWORK            "m.net.mdm.network"
@@ -301,6 +302,7 @@ class MetricsStandard
     OvmsMetricString* ms_m_net_mdm_network;               // Modem network operator
     OvmsMetricFloat*  ms_m_net_mdm_sq;                    // Modem network signal quality [dbm]
     OvmsMetricString* ms_m_net_mdm_iccid;                 // ICCID of SIM card in modem
+    OvmsMetricString *ms_m_net_mdm_imei;                  // ICCID of SIM card in modem
     OvmsMetricString* ms_m_net_mdm_model;                 // Model of modem discovered
     OvmsMetricString* ms_m_net_mdm_mode;                  // Cellular connection mode and status
     OvmsMetricBool*  ms_m_net_connected;                  // True = connected_any is true

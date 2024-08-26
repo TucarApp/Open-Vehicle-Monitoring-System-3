@@ -30,7 +30,7 @@
 #ifndef __VEHICLE_ME6_H__
 #define __VEHICLE_ME6_H__
 
-#include "vehicle.h"
+#include "vehicle_interface_tucar.h"
 #include "metrics_standard.h"
 
 #include "freertos/timers.h"
@@ -40,7 +40,7 @@
 
 using namespace std;
 
-class OvmsVehicleMaxe6 : public OvmsVehicle
+class OvmsVehicleMaxe6 : public OvmsVehicleInterfaceTucar
 {
 public:
 
@@ -48,11 +48,9 @@ public:
   ~OvmsVehicleMaxe6();
 
 protected:
-  void Ticker1(uint32_t ticker) override;
     
 private:
   void IncomingFrameCan1(CAN_frame_t* p_frame) override;
 };
 
 #endif //#ifndef __VEHICLE_ME6_H__
-

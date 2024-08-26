@@ -307,6 +307,8 @@ modem::modem(const char* name, uart_port_t uartnum, int baud, int rxpin, int txp
   m_driver = NULL;
   m_cmd_running = false;
   m_cmd_output.clear();
+  m_pos_imei = "";
+  m_pos_imei_counter = 0;
 
   ClearNetMetrics();
   StartTask();
@@ -861,6 +863,9 @@ modem::modem_state1_t modem::State1Ticker1()
         case 12:
           tx("AT+CGMR;+ICCID\r\n");
           break;
+        case 14:
+          tx("AT+GSN;+GSN;+GSN;+GSN\r\n");
+          break;
         case 20:
           tx("AT+CMUX=0\r\n");
           break;
@@ -1254,6 +1259,22 @@ void modem::StandardLineHandler(int channel, OvmsBuffer* buf, std::string line)
       MyEvents.SignalEvent("system.modem.received.ussd", (void*)m_line_buffer.c_str(),m_line_buffer.size()+1);
       m_line_unfinished = -1;
       m_line_buffer.clear();
+      }
+    }
+  else if (line.length() == 15)
+    {
+    if (m_pos_imei == "")
+      {
+      m_pos_imei = line;
+      }
+    else if (m_pos_imei == line)
+      {
+      m_pos_imei_counter++;
+      }
+    if (m_pos_imei_counter == 3)
+      {  
+      StandardMetrics.ms_m_net_mdm_imei->SetValue(line);
+      MyEvents.SignalEvent("system.modem.received.imei", NULL);
       }
     }
   }

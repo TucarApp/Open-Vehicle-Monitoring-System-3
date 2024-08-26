@@ -57,6 +57,7 @@ MetricsStandard::MetricsStandard()
   ms_m_net_mdm_netreg = new OvmsMetricString(MS_N_MDM_NETREG);
   ms_m_net_mdm_network = new OvmsMetricString(MS_N_MDM_NETWORK, SM_STALE_MAX);
   ms_m_net_mdm_iccid = new OvmsMetricString(MS_N_MDM_ICCID, SM_STALE_MAX);
+  ms_m_net_mdm_imei = new OvmsMetricString(MS_N_MDM_IMEI, SM_STALE_MAX);
   ms_m_net_mdm_model = new OvmsMetricString(MS_N_MDM_MODEL, SM_STALE_MAX);
   ms_m_net_mdm_mode = new OvmsMetricString(MS_N_MDM_MODE, SM_STALE_MAX);
 

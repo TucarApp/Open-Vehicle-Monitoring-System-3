@@ -139,6 +139,9 @@ modem::modem_state1_t simcom5360::State1Ticker1(modem::modem_state1_t curstate)
       case 12:
         m_modem->tx("AT+CGMR;+ICCID\r\n");
         break;
+      case 14:
+        m_modem->tx("AT+GSN;+GSN;+GSN;+GSN\r\n");
+        break;
       case 16:
         m_modem->tx("AT+CMUXSRVPORT=3,1\r\n");
         break;

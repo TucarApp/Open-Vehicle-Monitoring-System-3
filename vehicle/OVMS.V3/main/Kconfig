@@ -617,6 +617,14 @@ config OVMS_VEHICLE_KIANIROEVSG2
     help
         Enable support for Kia Niro EV SG2
 
+config OVMS_VEHICLE_MAPLE60S
+    bool "Include support for Maple 60s"
+    default y
+    depends on OVMS
+    depends on OVMS_COMP_POLLER
+    help
+        Enable support for Maple 60s
+
 config OVMS_VEHICLE_DONGFENG_E60
     bool "Include support for Dong Feng E60"
     default y
@@ -955,3 +963,36 @@ config OVMS_DEV_NETMANAGER_PING
         Enable to add 'network ping' command
 
 endmenu # Developer Options
+
+
+menu "Tucar Configurations"
+    depends on OVMS
+choice
+    prompt "Build type"
+    default OVMS_TUCAR_BUILD_TYPE_PROD
+    depends on OVMS
+    help
+        Select the build type for the device.
+
+config OVMS_TUCAR_BUILD_TYPE_PROD
+    bool "prod"
+    help
+        Production build type.
+
+config OVMS_TUCAR_BUILD_TYPE_DEV
+    bool "dev"
+    help
+        Development build type.
+endchoice
+config OVMS_TUCAR_BUILD_TYPE
+    string
+    default "prod" if OVMS_TUCAR_BUILD_TYPE_PROD
+    default "dev" if OVMS_TUCAR_BUILD_TYPE_DEV
+config OVMS_TUCAR_WIFI_AP_PSWD
+    string "Device access point password"
+    default "tucarAP"
+    depends on OVMS
+    help
+        The password for the device access point
+
+endmenu # Tucar Configurations
