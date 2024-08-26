@@ -29,6 +29,7 @@
 
 #include "vehicle_interface_tucar.h"
 
+#include <cstring>
 #include <functional>
 #include <string>
 #include <type_traits>
@@ -39,6 +40,23 @@
 #include "ovms_peripherals.h"
 #include "ovms_log.h"
 #include "ovms_metrics.h"
+
+#define DEFAULT_WIFI_AP_PSWD "tucarAP"
+
+constexpr bool constexpr_strcmp(const char* a, const char* b)
+{
+  return std::strcmp(a, b) == 0;
+}
+
+#ifdef CONFIG_OVMS_TUCAR_WIFI_AP_PSWD
+static const std::string defaultAccessPointPswd = CONFIG_OVMS_TUCAR_WIFI_AP_PSWD;
+#ifdef CONFIG_OVMS_TUCAR_BUILD_TYPE_PROD
+static_assert(strcmp(CONFIG_OVMS_TUCAR_WIFI_AP_PSWD, DEFAULT_WIFI_AP_PSWD),
+  "Invalid wifi access point. See Menuconfig: OVMS->Tucar Configurations");
+#endif // CONFIG_OVMS_TUCAR_BUILD_TYPE_PROD
+#else
+#error "CONFIG_OVMS_TUCAR_WIFI_AP_PSWD must be defined"
+#endif // CONFIG_OVMS_TUCAR_WIFI_AP_PSWD
 
 static const char *TAG = "v-iface-tucar";
 static const std::string defaultId(15, '0');
@@ -166,8 +184,10 @@ void setIdConfigs(const std::string& id)
   assert(result == ParamSetResult::Success);
   result = setParamConfig("server.v3", "topic.prefix", prefix);
   assert(result == ParamSetResult::Success);
-
-  // TODO: set param config for wifi.ap, id, password
+  result = setParamConfig("auto", "wifi.ssid.ap", id);
+  assert(result == ParamSetResult::Success);
+  result = setParamConfig("wifi.ap", id, defaultAccessPointPswd);
+  assert(result == ParamSetResult::Success);
 }
 
 void verifyAndSetIdConfigs(const std::string& id)
