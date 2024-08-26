@@ -43,11 +43,6 @@
 
 #define DEFAULT_WIFI_AP_PSWD "tucarAP"
 
-constexpr bool constexpr_strcmp(const char* a, const char* b)
-{
-  return std::strcmp(a, b) == 0;
-}
-
 #ifdef CONFIG_OVMS_TUCAR_WIFI_AP_PSWD
 static const std::string defaultAccessPointPswd = CONFIG_OVMS_TUCAR_WIFI_AP_PSWD;
 #ifdef CONFIG_OVMS_TUCAR_BUILD_TYPE_PROD
