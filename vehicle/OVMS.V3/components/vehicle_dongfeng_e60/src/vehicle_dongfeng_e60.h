@@ -1,13 +1,6 @@
 /*
 ;    Project:       Open Vehicle Monitor System
-;    Date:          14th March 2017
-;
-;    Changes:
-;    1.0  Initial release
-;
-;    (C) 2011       Michael Stegen / Stegen Electronics
-;    (C) 2011-2017  Mark Webb-Johnson
-;    (C) 2011        Sonny Chen @ EPRO/DX
+;    Date:          24th July 2024
 ;
 ; Permission is hereby granted, free of charge, to any person obtaining a copy
 ; of this software and associated documentation files (the "Software"), to deal
@@ -28,11 +21,35 @@
 ; THE SOFTWARE.
 */
 
-#ifndef __OVMS_MODULE_H__
+#ifndef __VEHICLE_DONGFENGE60_H__
+#define __VEHICLE_DONGFENGE60_H__
 
-extern void AddTaskToMap(TaskHandle_t task);
-extern void ExecuteDriverFactoryReset();
+#include "vehicle.h"
 
-#define __OVMS_MODULE_H__
 
-#endif //#ifndef __OVMS_MODULE_H__
+class OvmsVehicleDFE60 : public OvmsVehicle
+  {
+  public:
+		OvmsVehicleDFE60();
+    ~OvmsVehicleDFE60();
+
+  public:
+
+    void IncomingFrameCan1(CAN_frame_t *p_frame) override;
+    void Ticker1(uint32_t ticker) override;
+
+    vehicle_command_t CommandLock(const char *pin) override;
+    vehicle_command_t CommandUnlock(const char *pin) override;
+  
+  private:
+
+    struct
+      {
+      uint8_t byte[8];
+      uint8_t status;
+      uint16_t id;
+      } can_message_buffer;
+
+  };
+
+#endif // #ifndef __VEHICLE_DONGFENGE60_H__
