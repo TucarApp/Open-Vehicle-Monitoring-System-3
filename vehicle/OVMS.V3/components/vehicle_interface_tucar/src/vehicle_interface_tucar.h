@@ -67,9 +67,7 @@ public:
 
   bool hasImei() const;
   std::string getImei() const;
-
-protected:
-  virtual void Ticker1(uint32_t ticker) override;
+  std::string getId() const;
 
 private:
   void modemReceivedImei(std::string event, void* data);
@@ -79,4 +77,3 @@ private:
 };
 
 #endif //#ifndef __VEHICLE_INTERFACE_TUCAR_H__
-
