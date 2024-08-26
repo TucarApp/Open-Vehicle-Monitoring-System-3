@@ -264,6 +264,9 @@ void esp32bluetoothGATTS::EventHandler(esp_gatts_cb_event_t event,
             param->write.conn_id, param->write.trans_id, param->write.handle,
             param->write.len);
           esp_log_buffer_hex(TAG, param->write.value, param->write.len);
+          ESP_LOGI(TAG, "ESP_GATTS_WRITE_EVT/%s value: %s",
+            app->m_name,
+            std::string((char*)param->write.value,param->write.len).c_str());
           app->EventWrite(&param->write);
           break;
         case ESP_GATTS_EXEC_WRITE_EVT:

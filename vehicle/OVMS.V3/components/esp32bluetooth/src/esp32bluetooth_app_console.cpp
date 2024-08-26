@@ -196,8 +196,10 @@ void OvmsBluetoothAppConsole::EventRead(esp_ble_gatts_cb_param_t::gatts_read_evt
 
 void OvmsBluetoothAppConsole::EventWrite(esp_ble_gatts_cb_param_t::gatts_write_evt_param *write)
   {
+  ESP_LOGI(TAG, "EventWrite");
   if (!write->is_prep)
     {
+    ESP_LOGI(TAG, "is_prep");
     if (m_descr_handle == write->handle && write->len == 2)
       {
       uint16_t descr_value = write->value[1]<<8 | write->value[0];
