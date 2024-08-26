@@ -1,6 +1,6 @@
 /*
 ;    Project:       Open Vehicle Monitor System
-;    Date:          14th August 2024
+;    Date:          20th August 2024
 ;
 ;    Changes:
 ;    1.0  Initial release
@@ -27,31 +27,53 @@
 ; THE SOFTWARE.
 */
 
-#ifndef __VEHICLE_ME6_H__
-#define __VEHICLE_ME6_H__
+#ifndef __VEHICLE_INTERFACE_TUCAR_H__
+#define __VEHICLE_INTERFACE_TUCAR_H__
 
-#include "vehicle_interface_tucar.h"
-#include "metrics_standard.h"
+#include "vehicle.h"
 
-#include "freertos/timers.h"
-
-#include <vector>
-
-
-using namespace std;
-
-class OvmsVehicleMaxe6 : public OvmsVehicleInterfaceTucar
+template<typename T>
+struct Optional
 {
-public:
+  Optional() : mHasValue(false) {}
 
-  OvmsVehicleMaxe6();
-  ~OvmsVehicleMaxe6();
+  T getValue() const
+  {
+    assert(mHasValue);
+    return mValue;
+  }
 
-protected:
-    
+  bool hasValue() const
+  {
+    return mHasValue;
+  }
+
+  void setValue(const T& value)
+  {
+    mValue = value;
+    mHasValue = true;
+  }
+
 private:
-  void IncomingFrameCan1(CAN_frame_t* p_frame) override;
+  T mValue;
+  bool mHasValue;
 };
 
-#endif //#ifndef __VEHICLE_ME6_H__
+class OvmsVehicleInterfaceTucar : public OvmsVehicle
+{
+public:
+  OvmsVehicleInterfaceTucar();
+  virtual ~OvmsVehicleInterfaceTucar() = default;
 
+  bool hasImei() const;
+  std::string getImei() const;
+  std::string getId() const;
+
+private:
+  void modemReceivedImei(std::string event, void* data);
+  void setImei(const std::string& imei);
+
+  Optional<std::string> mImei;
+};
+
+#endif //#ifndef __VEHICLE_INTERFACE_TUCAR_H__
