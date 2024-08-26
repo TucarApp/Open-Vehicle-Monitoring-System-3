@@ -41,6 +41,7 @@
 #include "ovms_metrics.h"
 
 static const char *TAG = "v-iface-tucar";
+static const std::string defaultId(15, '0');
 
 namespace
 {
@@ -154,6 +155,27 @@ void setParamConfigMap(const ParamMap<T>& paramMap)
   }
 }
 
+void setIdConfigs(const std::string& id)
+{
+  std::string prefix = "ovms/car/";
+  prefix.append(id);
+  prefix.append("/");
+
+  auto result = ParamSetResult::Fail;
+  result = setParamConfig("vehicle", "id", id);
+  assert(result == ParamSetResult::Success);
+  result = setParamConfig("server.v3", "topic.prefix", prefix);
+  assert(result == ParamSetResult::Success);
+
+  // TODO: set param config for wifi.ap, id, password
+}
+
+void verifyAndSetIdConfigs(const std::string& id)
+{
+  if (MyConfig.GetParamValue("vehicle", "id") == id) return;
+  setIdConfigs(id);
+}
+
 } // namespace
 
 
@@ -177,10 +199,13 @@ OvmsVehicleInterfaceTucar::OvmsVehicleInterfaceTucar()
   /* Set imei if it has already been registered. */
   auto imeiValue = MyMetrics.Find("m.net.mdm.imei")->AsString();
   if (!imeiValue.empty()) setImei(imeiValue);
-}
 
-void OvmsVehicleInterfaceTucar::Ticker1(uint32_t ticker)
-{
+  if (hasImei())
+  {
+    auto id = getId();
+    assert(id != defaultId);
+    verifyAndSetIdConfigs(id);
+  }
 }
 
 bool OvmsVehicleInterfaceTucar::hasImei() const
@@ -198,10 +223,21 @@ void OvmsVehicleInterfaceTucar::setImei(const std::string& imei)
   mImei.setValue(imei);
 }
 
+std::string OvmsVehicleInterfaceTucar::getId() const
+{
+  if (hasImei()) return getImei();
+  else return defaultId;
+}
+
 void OvmsVehicleInterfaceTucar::modemReceivedImei(std::string event, void* data)
 {
   ESP_LOGI(TAG, "Received IMEI from modem");
   auto imeiValue = MyMetrics.Find("m.net.mdm.imei")->AsString();
   if (!imeiValue.empty()) setImei(imeiValue);
-}
 
+  assert(hasImei());
+
+  auto id = getId();
+  assert(id != defaultId);
+  verifyAndSetIdConfigs(id);
+}

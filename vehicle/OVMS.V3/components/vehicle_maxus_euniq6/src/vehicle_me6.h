@@ -48,7 +48,6 @@ public:
   ~OvmsVehicleMaxe6();
 
 protected:
-  void Ticker1(uint32_t ticker) override;
     
 private:
   void IncomingFrameCan1(CAN_frame_t* p_frame) override;
