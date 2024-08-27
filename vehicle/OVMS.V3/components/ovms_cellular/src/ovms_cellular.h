@@ -65,6 +65,8 @@ class modem : public pcp, public InternalRamAllocated
     int m_txpin;
     int m_pwregpio;
     int m_dtregpio;
+    std::string m_pos_imei;
+    int m_pos_imei_counter;
 
   public:
     typedef enum
@@ -199,6 +201,7 @@ class modem : public pcp, public InternalRamAllocated
 
   public:
     // High level API functions
+    bool ModemIsNetMode();
     void StartTask();
     void StopTask();
     bool StartNMEA(bool force=false);
@@ -211,6 +214,7 @@ class modem : public pcp, public InternalRamAllocated
     void Task();
     void Ticker(std::string event, void* data);
     void EventListener(std::string event, void* data);
+    void ConfigChanged(std::string event, void *data);
     void IncomingMuxData(GsmMuxChannel* channel);
     void SendSetState1(modem_state1_t newstate);
     bool IsStarted();

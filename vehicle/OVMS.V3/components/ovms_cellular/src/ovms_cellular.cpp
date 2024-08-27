@@ -41,6 +41,7 @@ static const char *TAG = "cellular";
 #include "ovms_events.h"
 #include "ovms_notify.h"
 #include "ovms_boot.h"
+#include "ovms_config.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 // Global convenience variables
@@ -292,6 +293,7 @@ modem::modem(const char* name, uart_port_t uartnum, int baud, int rxpin, int txp
   for (size_t k=0; k<CELLULAR_NETREG_COUNT; k++) { m_netreg_d[k] = Unknown; }
   m_provider = "";
   m_sq = 99; // Unknown
+  m_good_signal = false;
   m_powermode = Off;
   m_pincode_required = false;
   m_err_uart_fifo_ovf = 0;
@@ -305,14 +307,19 @@ modem::modem(const char* name, uart_port_t uartnum, int baud, int rxpin, int txp
   m_driver = NULL;
   m_cmd_running = false;
   m_cmd_output.clear();
+  m_pos_imei = "";
+  m_pos_imei_counter = 0;
 
   ClearNetMetrics();
   StartTask();
 
   using std::placeholders::_1;
   using std::placeholders::_2;
-  MyEvents.RegisterEvent(TAG,"ticker.1", std::bind(&modem::Ticker, this, _1, _2));
+  MyEvents.RegisterEvent(TAG, "ticker.1", std::bind(&modem::Ticker, this, _1, _2));
   MyEvents.RegisterEvent(TAG, "system.shuttingdown", std::bind(&modem::EventListener, this, _1, _2));
+  MyEvents.RegisterEvent(TAG, "config.mounted", std::bind(&modem::ConfigChanged, this, _1, _2));
+  MyEvents.RegisterEvent(TAG, "config.changed", std::bind(&modem::ConfigChanged, this, _1, _2));
+  ConfigChanged("config.mounted", NULL);
   }
 
 modem::~modem()
@@ -356,6 +363,11 @@ void modem::SetPowerMode(PowerMode powermode)
     default:
       break;
     }
+  }
+
+bool modem::ModemIsNetMode()
+  {
+  return m_state1 == NetMode;
   }
 
 void modem::AutoInit()
@@ -851,6 +863,9 @@ modem::modem_state1_t modem::State1Ticker1()
         case 12:
           tx("AT+CGMR;+ICCID\r\n");
           break;
+        case 14:
+          tx("AT+GSN;+GSN;+GSN;+GSN\r\n");
+          break;
         case 20:
           tx("AT+CMUX=0\r\n");
           break;
@@ -1246,6 +1261,22 @@ void modem::StandardLineHandler(int channel, OvmsBuffer* buf, std::string line)
       m_line_buffer.clear();
       }
     }
+  else if (line.length() == 15)
+    {
+    if (m_pos_imei == "")
+      {
+      m_pos_imei = line;
+      }
+    else if (m_pos_imei == line)
+      {
+      m_pos_imei_counter++;
+      }
+    if (m_pos_imei_counter == 3)
+      {  
+      StandardMetrics.ms_m_net_mdm_imei->SetValue(line);
+      MyEvents.SignalEvent("system.modem.received.imei", NULL);
+      }
+    }
   }
 
 bool modem::IdentifyModel()
@@ -1508,6 +1539,17 @@ void modem::EventListener(std::string event, void* data)
     }
   }
 
+void modem::ConfigChanged(std::string event, void* data)
+  {
+  OvmsConfigParam* param = (OvmsConfigParam*)data;
+  if (event == "config.mounted" || !param || param->GetName() == "network")
+    {
+    // Network config has been changed, apply:
+    m_good_dbm = MyConfig.GetParamValueFloat("network", "modem.sq.good", -95);
+    m_bad_dbm = MyConfig.GetParamValueFloat("network", "modem.sq.bad", -93);
+    }
+  }
+
 void modem::IncomingMuxData(GsmMuxChannel* channel)
   {
   // The MUX has indicated there is data on the specified channel
@@ -1616,10 +1658,16 @@ void modem::SetSignalQuality(int newsq)
     {
     m_sq = newsq;
     ESP_LOGD(TAG, "Signal Quality is: %d (%d dBm)", m_sq, UnitConvert(sq, dbm, m_sq));
+    float current_dbm = UnitConvert(sq, dbm, m_sq);
     StdMetrics.ms_m_net_mdm_sq->SetValue(m_sq, sq);
     if (StdMetrics.ms_m_net_type->AsString() == "modem")
       {
       StdMetrics.ms_m_net_sq->SetValue(m_sq, sq);
+      if (m_good_signal && current_dbm < m_bad_dbm)
+        m_good_signal = false;
+      if (!m_good_signal && current_dbm > m_good_dbm)
+        m_good_signal = true;
+      StdMetrics.ms_m_net_good_sq->SetValue(m_good_signal);
       }
     }
   }
@@ -1634,6 +1682,7 @@ void modem::ClearNetMetrics()
   StdMetrics.ms_m_net_mdm_network->Clear();
 
   m_sq = 99;
+  m_good_signal = false;
   StdMetrics.ms_m_net_mdm_sq->Clear();
 
   if (StdMetrics.ms_m_net_type->AsString() == "modem")

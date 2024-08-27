@@ -1,13 +1,12 @@
 /*
 ;    Project:       Open Vehicle Monitor System
-;    Date:          14th March 2017
+;    Date:          20th August 2024
 ;
 ;    Changes:
 ;    1.0  Initial release
 ;
-;    (C) 2011       Michael Stegen / Stegen Electronics
-;    (C) 2011-2017  Mark Webb-Johnson
-;    (C) 2011        Sonny Chen @ EPRO/DX
+;    (C) 2021       Jaime Middleton / Tucar
+;    (C) 2021       Axel Troncoso   / Tucar
 ;
 ; Permission is hereby granted, free of charge, to any person obtaining a copy
 ; of this software and associated documentation files (the "Software"), to deal
@@ -28,11 +27,53 @@
 ; THE SOFTWARE.
 */
 
-#ifndef __OVMS_MODULE_H__
+#ifndef __VEHICLE_INTERFACE_TUCAR_H__
+#define __VEHICLE_INTERFACE_TUCAR_H__
 
-extern void AddTaskToMap(TaskHandle_t task);
-extern void ExecuteDriverFactoryReset();
+#include "vehicle.h"
 
-#define __OVMS_MODULE_H__
+template<typename T>
+struct Optional
+{
+  Optional() : mHasValue(false) {}
 
-#endif //#ifndef __OVMS_MODULE_H__
+  T getValue() const
+  {
+    assert(mHasValue);
+    return mValue;
+  }
+
+  bool hasValue() const
+  {
+    return mHasValue;
+  }
+
+  void setValue(const T& value)
+  {
+    mValue = value;
+    mHasValue = true;
+  }
+
+private:
+  T mValue;
+  bool mHasValue;
+};
+
+class OvmsVehicleInterfaceTucar : public OvmsVehicle
+{
+public:
+  OvmsVehicleInterfaceTucar();
+  virtual ~OvmsVehicleInterfaceTucar() = default;
+
+  bool hasImei() const;
+  std::string getImei() const;
+  std::string getId() const;
+
+private:
+  void modemReceivedImei(std::string event, void* data);
+  void setImei(const std::string& imei);
+
+  Optional<std::string> mImei;
+};
+
+#endif //#ifndef __VEHICLE_INTERFACE_TUCAR_H__

@@ -1,13 +1,12 @@
 /*
 ;    Project:       Open Vehicle Monitor System
-;    Date:          14th March 2017
+;    Date:          14th August 2024
 ;
 ;    Changes:
 ;    1.0  Initial release
 ;
-;    (C) 2011       Michael Stegen / Stegen Electronics
-;    (C) 2011-2017  Mark Webb-Johnson
-;    (C) 2011        Sonny Chen @ EPRO/DX
+;    (C) 2021       Jaime Middleton / Tucar
+;    (C) 2021       Axel Troncoso   / Tucar
 ;
 ; Permission is hereby granted, free of charge, to any person obtaining a copy
 ; of this software and associated documentation files (the "Software"), to deal
@@ -28,11 +27,31 @@
 ; THE SOFTWARE.
 */
 
-#ifndef __OVMS_MODULE_H__
+#ifndef __VEHICLE_ME6_H__
+#define __VEHICLE_ME6_H__
 
-extern void AddTaskToMap(TaskHandle_t task);
-extern void ExecuteDriverFactoryReset();
+#include "vehicle_interface_tucar.h"
+#include "metrics_standard.h"
 
-#define __OVMS_MODULE_H__
+#include "freertos/timers.h"
 
-#endif //#ifndef __OVMS_MODULE_H__
+#include <vector>
+
+
+using namespace std;
+
+class OvmsVehicleMaxe6 : public OvmsVehicleInterfaceTucar
+{
+public:
+
+  OvmsVehicleMaxe6();
+  ~OvmsVehicleMaxe6();
+
+protected:
+    
+private:
+  void IncomingFrameCan1(CAN_frame_t* p_frame) override;
+};
+
+#endif //#ifndef __VEHICLE_ME6_H__
+
