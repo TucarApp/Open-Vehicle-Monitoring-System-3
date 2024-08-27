@@ -30,6 +30,7 @@
 
 #include "ovms_log.h"
 static const char *TAG = "vehicle";
+static const char *BASE_VEHICLE = "KN2";
 // static const char *TAGRX = "vehicle-rx";
 static const char *CHECK_SHUTDOWN_TAG = "vehicle-shutdown";
 
@@ -212,7 +213,11 @@ OvmsVehicle* OvmsVehicleFactory::NewVehicle(const char* VehicleType)
     {
     return iter->second.construct();
     }
-  return NULL;
+  if (strcmp(VehicleType, BASE_VEHICLE) == 0)
+    {
+    return NULL;
+    }
+  return NewVehicle(BASE_VEHICLE);
   }
 
 void OvmsVehicleFactory::ClearVehicle()
@@ -277,7 +282,7 @@ void OvmsVehicleFactory::SetVehicle(const char* type)
 
 void OvmsVehicleFactory::AutoInit()
   {
-  std::string type = MyConfig.GetParamValue("auto", "vehicle.type");
+  std::string type = MyConfig.GetParamValue("auto", "vehicle.type", BASE_VEHICLE);
   if (!type.empty())
     SetVehicle(type.c_str());
   }

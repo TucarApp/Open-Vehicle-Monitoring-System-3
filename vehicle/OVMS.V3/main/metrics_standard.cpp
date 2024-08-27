@@ -48,6 +48,9 @@ MetricsStandard::MetricsStandard()
   ms_m_net_type = new OvmsMetricString(MS_N_TYPE, SM_STALE_MAX);
   ms_m_net_sq = new OvmsMetricInt(MS_N_SQ, SM_STALE_MAX, dbm);
   ms_m_net_provider = new OvmsMetricString(MS_N_PROVIDER, SM_STALE_MAX);
+  ms_m_net_connected = new OvmsMetricBool(MS_N_CONNECTED);
+  ms_m_net_ip = new OvmsMetricBool(MS_N_IP);
+  ms_m_net_good_sq = new OvmsMetricBool(MS_N_GOOD_SQ);
   ms_m_net_wifi_sq = new OvmsMetricFloat(MS_N_WIFI_SQ, SM_STALE_MAX, dbm);
   ms_m_net_wifi_network = new OvmsMetricString(MS_N_WIFI_NETWORK, SM_STALE_MAX);
   ms_m_net_mdm_sq = new OvmsMetricFloat(MS_N_MDM_SQ, SM_STALE_MAX, dbm);
@@ -224,11 +227,14 @@ MetricsStandard::MetricsStandard()
   ms_v_env_awake = new OvmsMetricBool(MS_V_ENV_AWAKE, SM_STALE_MID, Other, true);
   ms_v_env_on = new OvmsMetricBool(MS_V_ENV_ON, SM_STALE_MID, Other, true);
   ms_v_env_drivemode = new OvmsMetricInt(MS_V_ENV_DRIVEMODE, SM_STALE_MID, Other, true);
+  ms_v_env_efficiencymode = new OvmsMetricString(MS_V_ENV_EFFICIENCYMODE, SM_STALE_MID, Other, true);
+  ms_v_env_regenlevel = new OvmsMetricFloat(MS_V_ENV_REGENLEVEL, SM_STALE_MID, Percentage, true);
   ms_v_env_gear = new OvmsMetricInt(MS_V_ENV_GEAR, SM_STALE_MID);
   ms_v_env_throttle = new OvmsMetricFloat(MS_V_ENV_THROTTLE, SM_STALE_MID, Percentage);
   ms_v_env_footbrake = new OvmsMetricFloat(MS_V_ENV_FOOTBRAKE, SM_STALE_MID, Percentage);
   ms_v_env_handbrake = new OvmsMetricBool(MS_V_ENV_HANDBRAKE, SM_STALE_MID);
   ms_v_env_regenbrake = new OvmsMetricBool(MS_V_ENV_REGENBRAKE, SM_STALE_MID);
+  ms_v_env_onepedal = new OvmsMetricBool(MS_V_ENV_ONEPEDAL, SM_STALE_MID);
   ms_v_env_cooling = new OvmsMetricBool(MS_V_ENV_COOLING, SM_STALE_MID);
   ms_v_env_heating = new OvmsMetricBool(MS_V_ENV_HEATING, SM_STALE_MID);
   ms_v_env_hvac = new OvmsMetricBool(MS_V_ENV_HVAC, SM_STALE_MID);
