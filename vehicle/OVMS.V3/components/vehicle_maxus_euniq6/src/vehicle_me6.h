@@ -54,4 +54,3 @@ private:
 };
 
 #endif //#ifndef __VEHICLE_ME6_H__
-
