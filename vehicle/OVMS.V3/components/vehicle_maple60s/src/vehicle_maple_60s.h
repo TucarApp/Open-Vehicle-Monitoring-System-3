@@ -1,13 +1,12 @@
 /*
 ;    Project:       Open Vehicle Monitor System
-;    Date:          14th March 2017
+;    Date:          16th August 2024
 ;
 ;    Changes:
-;    1.0  Initial release
+;    1.0  Initial stub
 ;
-;    (C) 2011       Michael Stegen / Stegen Electronics
-;    (C) 2011-2017  Mark Webb-Johnson
-;    (C) 2011        Sonny Chen @ EPRO/DX
+;    (C) 2024        Jaime Middleton / Tucar
+;    (C) 2024        Axel Troncoso   / Tucar
 ;
 ; Permission is hereby granted, free of charge, to any person obtaining a copy
 ; of this software and associated documentation files (the "Software"), to deal
@@ -28,11 +27,25 @@
 ; THE SOFTWARE.
 */
 
-#ifndef __OVMS_MODULE_H__
+#ifndef __VEHICLE_MAPLE60S_H__
+#define __VEHICLE_MAPLE60S_H__
 
-extern void AddTaskToMap(TaskHandle_t task);
-extern void ExecuteDriverFactoryReset();
+#include "vehicle.h"
 
-#define __OVMS_MODULE_H__
+using namespace std;
 
-#endif //#ifndef __OVMS_MODULE_H__
+class OvmsVehicleMaple60S : public OvmsVehicle
+{
+public:
+  OvmsVehicleMaple60S();
+  ~OvmsVehicleMaple60S();
+
+public:
+  void IncomingFrameCan1(CAN_frame_t *p_frame) override;
+  void Ticker1(uint32_t ticker) override;
+
+private:
+  std::array<bool, 4> m_door_lock_status;
+};
+
+#endif // #ifndef __VEHICLE_MAPLE60S_H__
