@@ -65,7 +65,11 @@ OvmsBluetoothAppConsole::OvmsBluetoothAppConsole()
   m_console = NULL;
 
   m_app_id = GATTS_APP_UUID_OVMS_CONSOLE;
+
+/* Only include app if specified via kconfig. */
+#ifdef CONFIG_OVMS_COMP_BLUETOOTH_APP_CONSOLE
   MyBluetoothGATTS.RegisterApp(this);
+#endif
   }
 
 OvmsBluetoothAppConsole::~OvmsBluetoothAppConsole()

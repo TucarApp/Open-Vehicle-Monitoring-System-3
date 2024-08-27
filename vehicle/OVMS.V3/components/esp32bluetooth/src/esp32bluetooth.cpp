@@ -115,6 +115,8 @@ void esp32bluetooth::StartService()
   // uint32_t passkey = 1234;
   // esp_ble_gap_set_security_param(ESP_BLE_SM_SET_STATIC_PASSKEY, &passkey, sizeof(uint32_t));
 
+  m_service_running = true;
+
   }
  
 
