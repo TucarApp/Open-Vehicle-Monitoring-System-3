@@ -60,6 +60,7 @@ class OvmsVehicleKiaNiroEvSg2 : public KiaVehicle
               uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
               uint8_t b5, uint8_t b6, uint8_t mode);
 
+
   protected:
     void IncomingVMCU(canbus *bus, uint16_t type, uint16_t pid, const uint8_t *data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
     void IncomingBMC(canbus* bus, uint16_t type, uint16_t pid, const uint8_t* data, uint8_t length, uint16_t mlframe, uint16_t mlremain);

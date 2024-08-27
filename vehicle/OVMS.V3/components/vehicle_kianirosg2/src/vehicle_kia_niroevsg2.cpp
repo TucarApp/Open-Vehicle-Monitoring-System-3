@@ -104,6 +104,7 @@ OvmsVehicleKiaNiroEvSg2::OvmsVehicleKiaNiroEvSg2()
   RegisterCanBus(1, CAN_MODE_ACTIVE, CAN_SPEED_500KBPS);
   POLLSTATE_OFF;
   PollSetPidList(m_can1, vehicle_kianiroevsg2_polls);
+
   }
 
 /**
@@ -129,6 +130,7 @@ OvmsVehicleKiaNiroEvSg2::PollState OvmsVehicleKiaNiroEvSg2::GetPollState()
       return PollState::OFF;
     }
   }
+
 
 /**
  * Ticker1: Called every second
@@ -193,6 +195,7 @@ void OvmsVehicleKiaNiroEvSg2::Ticker1(uint32_t ticker)
 
   }
 
+
 /**
  * Update metrics when charging
  */
@@ -204,6 +207,7 @@ void OvmsVehicleKiaNiroEvSg2::HandleCharging()
   SetChargeType();
   }
 
+
 /**
  * Update metrics when charging stops
  */
@@ -212,6 +216,7 @@ void OvmsVehicleKiaNiroEvSg2::HandleChargeStop()
   ESP_LOGI(TAG, "CAR CHARGING STOPPED");
   ResetChargeType();
   }
+
 
 /**
  * Update metrics when car is turned on
@@ -222,6 +227,7 @@ void OvmsVehicleKiaNiroEvSg2::HandleCarOn()
   ESP_LOGI(TAG, "CAR IS ON | POLLSTATE RUNNING");
   }
 
+
 /**
  * Update metrics when car is turned off
  */
@@ -230,6 +236,7 @@ void OvmsVehicleKiaNiroEvSg2::HandleCarOff()
   POLLSTATE_OFF;
   ESP_LOGI(TAG, "CAR IS OFF | POLLSTATE OFF");
   }
+
 
 /**
  *  Sets the charger type
@@ -240,6 +247,7 @@ void OvmsVehicleKiaNiroEvSg2::SetChargeType()
   StdMetrics.ms_v_charge_type->SetValue(using_css ? "CCS" : "Type2");
   }
 
+
 /**
  * Resets the charges type
  */
@@ -247,6 +255,7 @@ void OvmsVehicleKiaNiroEvSg2::ResetChargeType()
   {
   StdMetrics.ms_v_charge_type->SetValue("");
   }
+
 
 /**
  * Handles incoming CAN-frames on bus 1, the C-bus
@@ -271,6 +280,7 @@ void OvmsVehicleKiaNiroEvSg2::IncomingFrameCan1(CAN_frame_t* p_frame)
     kia_send_can.byte[7] = d[7];
     }
   }
+
 
 
 /**
@@ -316,6 +326,7 @@ void OvmsVehicleKiaNiroEvSg2::IncomingPollReply(const OvmsPoller::poll_job_t &jo
     }
   }
 
+
 /**
  * Handle incoming messages from cluster.
  */
@@ -342,6 +353,7 @@ void OvmsVehicleKiaNiroEvSg2::IncomingCM(canbus *bus, uint16_t type, uint16_t pi
     }
   }
 
+
 /**
  * Handle incoming messages from VMCU-poll
  *
@@ -362,6 +374,7 @@ void OvmsVehicleKiaNiroEvSg2::IncomingVMCU(canbus *bus, uint16_t type, uint16_t 
       break;
     }
   }
+
 
 /**
  * Handle incoming messages from BMC-poll
@@ -405,6 +418,7 @@ void OvmsVehicleKiaNiroEvSg2::IncomingBMC(canbus *bus, uint16_t type, uint16_t p
     }
   }
 
+
 /**
  * Handle incoming messages from BCM-poll
  */
@@ -441,6 +455,7 @@ void OvmsVehicleKiaNiroEvSg2::IncomingBCM(canbus *bus, uint16_t type, uint16_t p
       }
     }
   }
+
 
 /**
  * Handle incoming messages from IGMP-poll
@@ -495,6 +510,7 @@ void OvmsVehicleKiaNiroEvSg2::IncomingSW(canbus *bus, uint16_t type, uint16_t pi
 
 
 
+
 class OvmsVehicleKiaNiroEvSg2Init
   {
   public:
@@ -506,3 +522,4 @@ OvmsVehicleKiaNiroEvSg2Init::OvmsVehicleKiaNiroEvSg2Init()
   ESP_LOGI(TAG, "Registering Vehicle: Kia Niro Sg2 EV (9000)");
   MyVehicleFactory.RegisterVehicle<OvmsVehicleKiaNiroEvSg2>("KN2", "Kia Niro Sg2 EV");
   }
+
