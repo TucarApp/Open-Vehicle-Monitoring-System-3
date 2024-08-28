@@ -31,55 +31,56 @@
 #ifndef __VEHICLE_NETAAYA_H__
 #define __VEHICLE_NETAAYA_H__
 
-#include "vehicle.h"
+#include "vehicle_interface_tucar.h"
 
 using namespace std;
 
-class OvmsVehicleNetaAya : public OvmsVehicle
+class OvmsVehicleNetaAya : public OvmsVehicleInterfaceTucar
+{
+public:
+  enum class PollState : uint8_t
   {
-  public:
-    enum class PollState : uint8_t
-    {
-      OFF = 0,
-      RUNNING = 1,
-      CHARGING = 2
-    };
+    OFF = 0,
+    RUNNING = 1,
+    CHARGING = 2
+  };
 
-    OvmsVehicleNetaAya();
-    ~OvmsVehicleNetaAya();
+  OvmsVehicleNetaAya();
+  ~OvmsVehicleNetaAya();
 
-  public:
-    void IncomingFrameCan1(CAN_frame_t* p_frame) override;
-    void IncomingFrameCan2(CAN_frame_t* p_frame) override;
-    void Ticker1(uint32_t ticker) override;
-    void IncomingPollReply(const OvmsPoller::poll_job_t &job, uint8_t *data, uint8_t length) override;
+public:
+  void IncomingFrameCan1(CAN_frame_t *p_frame) override;
+  void IncomingFrameCan2(CAN_frame_t *p_frame) override;
+  void Ticker1(uint32_t ticker) override;
+  void IncomingPollReply(const OvmsPoller::poll_job_t &job, uint8_t *data, uint8_t length) override;
 
-    void SendCanMessage(uint16_t id, uint8_t count,
-            uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
-            uint8_t b5, uint8_t b6);
-    void SendCanMessageSecondary(uint16_t id, uint8_t count,
-                        uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
-                        uint8_t b5, uint8_t b6);
-    void SendCanMessageTriple(uint16_t id, uint8_t count,
-            uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
-            uint8_t b5, uint8_t b6);
+  void SendCanMessage(uint16_t id, uint8_t count,
+                      uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
+                      uint8_t b5, uint8_t b6);
+  void SendCanMessageSecondary(uint16_t id, uint8_t count,
+                               uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
+                               uint8_t b5, uint8_t b6);
+  void SendCanMessageTriple(uint16_t id, uint8_t count,
+                            uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
+                            uint8_t b5, uint8_t b6);
 
-  private:
-    void HandleCharging();
-    void HandleChargeStop();
-    void HandleCarOn();
-    void HandleCarOff();
+private:
+  void HandleCharging();
+  void HandleChargeStop();
+  void HandleCarOn();
+  void HandleCarOff();
 
-    void ReadChargeType() const;
-    void ResetChargeType() const;
+  void ReadChargeType() const;
+  void ResetChargeType() const;
 
-    PollState GetPollState() const;
+  PollState GetPollState() const;
 
-    struct {
-      uint8_t byte[8];
-      uint8_t status;
-      uint16_t id;
-    } send_can_buffer;
+  struct
+  {
+    uint8_t byte[8];
+    uint8_t status;
+    uint16_t id;
+  } send_can_buffer;
   };
 
 #endif //#ifndef __VEHICLE_NETAAYA_H__

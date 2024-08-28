@@ -81,9 +81,9 @@ OvmsVehicleKiaNiroEvSg2::OvmsVehicleKiaNiroEvSg2()
   {
   ESP_LOGI(TAG, "Kia Sg2 EV vehicle module");
 
-  kia_send_can.id = 0;
-  kia_send_can.status = 0;
-  memset(kia_send_can.byte, 0, sizeof(kia_send_can.byte));
+  send_can.id = 0;
+  send_can.status = 0;
+  memset(send_can.byte, 0, sizeof(send_can.byte));
 
   // init metrics:
   m_v_door_lock_fl = MyMetrics.InitBool("xkn.v.door.lock.front.left", 10, 0);
@@ -256,19 +256,19 @@ void OvmsVehicleKiaNiroEvSg2::IncomingFrameCan1(CAN_frame_t* p_frame)
   uint8_t *d = p_frame->data.u8;
 
   // Check if response is from synchronous can message
-  if (kia_send_can.status == 0xff && p_frame->MsgID == (kia_send_can.id + 0x08))
+  if (send_can.status == 0xff && p_frame->MsgID == (send_can.id + 0x08))
     {
     //Store message bytes so that the async method can continue
-    kia_send_can.status = 3;
+    send_can.status = 3;
 
-    kia_send_can.byte[0] = d[0];
-    kia_send_can.byte[1] = d[1];
-    kia_send_can.byte[2] = d[2];
-    kia_send_can.byte[3] = d[3];
-    kia_send_can.byte[4] = d[4];
-    kia_send_can.byte[5] = d[5];
-    kia_send_can.byte[6] = d[6];
-    kia_send_can.byte[7] = d[7];
+    send_can.byte[0] = d[0];
+    send_can.byte[1] = d[1];
+    send_can.byte[2] = d[2];
+    send_can.byte[3] = d[3];
+    send_can.byte[4] = d[4];
+    send_can.byte[5] = d[5];
+    send_can.byte[6] = d[6];
+    send_can.byte[7] = d[7];
     }
   }
 
