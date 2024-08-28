@@ -85,6 +85,18 @@ public:
   void EventWrite(esp_ble_gatts_cb_param_t::gatts_write_evt_param *write) override;
   void EventExecWrite(esp_ble_gatts_cb_param_t::gatts_exec_write_evt_param *execwrite) override;
 
+  void EventMTU(esp_ble_gatts_cb_param_t::gatts_mtu_evt_param *mtu) {}
+  void EventConf(esp_ble_gatts_cb_param_t::gatts_conf_evt_param *conf) {}
+  void EventUnregistered() {}
+  void EventDelete(esp_ble_gatts_cb_param_t::gatts_delete_evt_param *del) {}
+  void EventStart(esp_ble_gatts_cb_param_t::gatts_start_evt_param *start) {}
+  void EventStop(esp_ble_gatts_cb_param_t::gatts_stop_evt_param *stop) {}
+  void EventOpen(esp_ble_gatts_cb_param_t::gatts_open_evt_param *open) {}
+  void EventCancelOpen(esp_ble_gatts_cb_param_t::gatts_cancel_open_evt_param *cancelopen) {}
+  void EventClose(esp_ble_gatts_cb_param_t::gatts_close_evt_param *close) {}
+  void EventListen() {}
+  void EventCongest(esp_ble_gatts_cb_param_t::gatts_congest_evt_param *congest) {}
+
 private:
 };
 

@@ -59,6 +59,18 @@ class OvmsBluetoothAppConsole : public esp32bluetoothApp
     void EventWrite(esp_ble_gatts_cb_param_t::gatts_write_evt_param *write);
     void EventExecWrite(esp_ble_gatts_cb_param_t::gatts_exec_write_evt_param *execwrite);
 
+    void EventMTU(esp_ble_gatts_cb_param_t::gatts_mtu_evt_param *mtu) {}
+    void EventConf(esp_ble_gatts_cb_param_t::gatts_conf_evt_param *conf) {}
+    void EventUnregistered() {}
+    void EventDelete(esp_ble_gatts_cb_param_t::gatts_delete_evt_param*) {}
+    void EventStart(esp_ble_gatts_cb_param_t::gatts_start_evt_param*) {}
+    void EventStop(esp_ble_gatts_cb_param_t::gatts_stop_evt_param*) {}
+    void EventOpen(esp_ble_gatts_cb_param_t::gatts_open_evt_param*) {}
+    void EventCancelOpen(esp_ble_gatts_cb_param_t::gatts_cancel_open_evt_param*) {}
+    void EventClose(esp_ble_gatts_cb_param_t::gatts_close_evt_param*) {}
+    void EventListen() {}
+    void EventCongest(esp_ble_gatts_cb_param_t::gatts_congest_evt_param*) {}
+
   private:
     OvmsBluetoothConsole* m_console;
     uint16_t m_char_handle;

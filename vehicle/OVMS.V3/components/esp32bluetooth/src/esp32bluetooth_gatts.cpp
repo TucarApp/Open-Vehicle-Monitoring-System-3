@@ -86,89 +86,89 @@ esp32bluetoothApp::esp32bluetoothApp(const char* name)
   m_mtu = 0;
   }
 
-esp32bluetoothApp::~esp32bluetoothApp()
-  {
-  }
+// esp32bluetoothApp::~esp32bluetoothApp()
+//   {
+//   }
 
-void esp32bluetoothApp::EventRegistered(esp_ble_gatts_cb_param_t::gatts_reg_evt_param *reg)
-  {
-  }
+// void esp32bluetoothApp::EventRegistered(esp_ble_gatts_cb_param_t::gatts_reg_evt_param *reg)
+//   {
+//   }
 
-void esp32bluetoothApp::EventRead(esp_ble_gatts_cb_param_t::gatts_read_evt_param *read)
-  {
-  }
+// void esp32bluetoothApp::EventRead(esp_ble_gatts_cb_param_t::gatts_read_evt_param *read)
+//   {
+//   }
 
-void esp32bluetoothApp::EventWrite(esp_ble_gatts_cb_param_t::gatts_write_evt_param *write)
-  {
-  }
+// void esp32bluetoothApp::EventWrite(esp_ble_gatts_cb_param_t::gatts_write_evt_param *write)
+//   {
+//   }
 
-void esp32bluetoothApp::EventExecWrite(esp_ble_gatts_cb_param_t::gatts_exec_write_evt_param *execwrite)
-  {
-  }
+// void esp32bluetoothApp::EventExecWrite(esp_ble_gatts_cb_param_t::gatts_exec_write_evt_param *execwrite)
+//   {
+//   }
 
-void esp32bluetoothApp::EventMTU(esp_ble_gatts_cb_param_t::gatts_mtu_evt_param *mtu)
-  {
-  }
+// void esp32bluetoothApp::EventMTU(esp_ble_gatts_cb_param_t::gatts_mtu_evt_param *mtu)
+//   {
+//   }
 
-void esp32bluetoothApp::EventConf(esp_ble_gatts_cb_param_t::gatts_conf_evt_param *conf)
-  {
-  }
+// void esp32bluetoothApp::EventConf(esp_ble_gatts_cb_param_t::gatts_conf_evt_param *conf)
+//   {
+//   }
 
-void esp32bluetoothApp::EventUnregistered()
-  {
-  }
+// void esp32bluetoothApp::EventUnregistered()
+//   {
+//   }
 
-void esp32bluetoothApp::EventDelete(esp_ble_gatts_cb_param_t::gatts_delete_evt_param *del)
-  {
-  }
+// void esp32bluetoothApp::EventDelete(esp_ble_gatts_cb_param_t::gatts_delete_evt_param *del)
+//   {
+//   }
 
-void esp32bluetoothApp::EventStart(esp_ble_gatts_cb_param_t::gatts_start_evt_param *start)
-  {
-  }
+// void esp32bluetoothApp::EventStart(esp_ble_gatts_cb_param_t::gatts_start_evt_param *start)
+//   {
+//   }
 
-void esp32bluetoothApp::EventStop(esp_ble_gatts_cb_param_t::gatts_stop_evt_param *stop)
-  {
-  }
+// void esp32bluetoothApp::EventStop(esp_ble_gatts_cb_param_t::gatts_stop_evt_param *stop)
+//   {
+//   }
 
-void esp32bluetoothApp::EventConnect(esp_ble_gatts_cb_param_t::gatts_connect_evt_param *connect)
-  {
-  }
+// void esp32bluetoothApp::EventConnect(esp_ble_gatts_cb_param_t::gatts_connect_evt_param *connect)
+//   {
+//   }
 
-void esp32bluetoothApp::EventDisconnect(esp_ble_gatts_cb_param_t::gatts_disconnect_evt_param *disconnect)
-  {
-  }
+// void esp32bluetoothApp::EventDisconnect(esp_ble_gatts_cb_param_t::gatts_disconnect_evt_param *disconnect)
+//   {
+//   }
 
-void esp32bluetoothApp::EventOpen(esp_ble_gatts_cb_param_t::gatts_open_evt_param *open)
-  {
-  }
+// void esp32bluetoothApp::EventOpen(esp_ble_gatts_cb_param_t::gatts_open_evt_param *open)
+//   {
+//   }
 
-void esp32bluetoothApp::EventCancelOpen(esp_ble_gatts_cb_param_t::gatts_cancel_open_evt_param *cancelopen)
-  {
-  }
+// void esp32bluetoothApp::EventCancelOpen(esp_ble_gatts_cb_param_t::gatts_cancel_open_evt_param *cancelopen)
+//   {
+//   }
 
-void esp32bluetoothApp::EventClose(esp_ble_gatts_cb_param_t::gatts_close_evt_param *close)
-  {
-  }
+// void esp32bluetoothApp::EventClose(esp_ble_gatts_cb_param_t::gatts_close_evt_param *close)
+//   {
+//   }
 
-void esp32bluetoothApp::EventListen()
-  {
-  }
+// void esp32bluetoothApp::EventListen()
+//   {
+//   }
 
-void esp32bluetoothApp::EventCongest(esp_ble_gatts_cb_param_t::gatts_congest_evt_param *congest)
-  {
-  }
+// void esp32bluetoothApp::EventCongest(esp_ble_gatts_cb_param_t::gatts_congest_evt_param *congest)
+//   {
+//   }
 
-void esp32bluetoothApp::EventCreate(esp_ble_gatts_cb_param_t::gatts_add_attr_tab_evt_param *attrtab)
-  {
-  }
+// void esp32bluetoothApp::EventCreate(esp_ble_gatts_cb_param_t::gatts_add_attr_tab_evt_param *attrtab)
+//   {
+//   }
 
-void esp32bluetoothApp::EventAddChar(esp_ble_gatts_cb_param_t::gatts_add_char_evt_param *addchar)
-  {
-  }
+// void esp32bluetoothApp::EventAddChar(esp_ble_gatts_cb_param_t::gatts_add_char_evt_param *addchar)
+//   {
+//   }
 
-void esp32bluetoothApp::EventAddCharDescr(esp_ble_gatts_cb_param_t::gatts_add_char_descr_evt_param *adddescr)
-  {
-  }
+// void esp32bluetoothApp::EventAddCharDescr(esp_ble_gatts_cb_param_t::gatts_add_char_descr_evt_param *adddescr)
+//   {
+//   }
 
 
 
