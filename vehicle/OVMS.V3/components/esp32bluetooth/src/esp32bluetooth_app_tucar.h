@@ -108,6 +108,8 @@ private:
   uint16_t m_descr_handle;
   uint16_t m_char_handle;
 
+  BluetoothCommandResponseBuffer m_command_response_buffer;
+
 };
 
 #endif // #ifndef __ESP32BLUETOOTH_APP_TUCAR_H__

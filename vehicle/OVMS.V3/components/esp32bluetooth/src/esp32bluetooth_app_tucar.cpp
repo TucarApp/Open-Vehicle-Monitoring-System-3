@@ -1,13 +1,12 @@
 /*
 ;    Project:       Open Vehicle Monitor System
-;    Date:          14th March 2017
+;    Date:          27th August 2024
 ;
 ;    Changes:
 ;    1.0  Initial release
 ;
-;    (C) 2011       Michael Stegen / Stegen Electronics
-;    (C) 2011-2017  Mark Webb-Johnson
-;    (C) 2011        Sonny Chen @ EPRO/DX
+;    (C) 2024      Jaime Middleton / Tucar
+;    (C) 2024      Axel Troncoso   / Tucar
 ;
 ; Permission is hereby granted, free of charge, to any person obtaining a copy
 ; of this software and associated documentation files (the "Software"), to deal
@@ -182,7 +181,14 @@ void BluetoothCommandResponseBuffer::closeAuthenticatedSession()
 }
 
 OvmsBluetoothTucarApp::OvmsBluetoothTucarApp() :
-  esp32bluetoothApp("tucar-app")
+  esp32bluetoothApp("tucar-app"),
+  m_char_uuid(),
+  m_descr_uuid(),
+  m_descr_handle(0),
+  m_char_handle(0),
+  m_command_response_buffer({
+    "^lock\\s.*", "^unlock\\s.*", "^module\\s.*", "^bt\\s.*"
+  })
 {
   ESP_LOGI(TAG, "Created OvmsBluetoothTucarApp");
   MyBluetoothGATTS.RegisterApp(this);
