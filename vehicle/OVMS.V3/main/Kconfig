@@ -1028,5 +1028,17 @@ config OVMS_TUCAR_WIFI_AP_PSWD
     depends on OVMS
     help
         The password for the device access point
+config OVMS_TUCAR_BLE_APP
+    bool "Enable Tucar BLE app"
+    default "Tucar"
+    depends on OVMS
+    help
+        Enable the Tucar BLE app
+config OVMS_TUCAR_BLE_APP_COMMAND_PSWD
+    string "BLE app command password"
+    default "tucar987"
+    depends on OVMS && OVMS_TUCAR_BLE_APP
+    help
+        The password for the BLE app command
 
 endmenu # Tucar Configurations
