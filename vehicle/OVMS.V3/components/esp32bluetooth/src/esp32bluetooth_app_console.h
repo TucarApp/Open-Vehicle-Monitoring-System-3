@@ -50,7 +50,7 @@ class OvmsBluetoothAppConsole : public esp32bluetoothApp
   public:
     void DataFromConsole(const char* data, size_t len);
     void EventRegistered(esp_ble_gatts_cb_param_t::gatts_reg_evt_param *reg);
-    void EventCreate(esp_ble_gatts_cb_param_t::gatts_add_attr_tab_evt_param *attrtab);
+    void EventCreate(esp_ble_gatts_cb_param_t::gatts_create_evt_param *attrtab);
     void EventConnect(esp_ble_gatts_cb_param_t::gatts_connect_evt_param *connect);
     void EventDisconnect(esp_ble_gatts_cb_param_t::gatts_disconnect_evt_param *disconnect);
     void EventAddChar(esp_ble_gatts_cb_param_t::gatts_add_char_evt_param *addchar);

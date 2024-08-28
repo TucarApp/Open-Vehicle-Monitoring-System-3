@@ -83,7 +83,7 @@ class esp32bluetoothApp
     virtual void  EventClose(esp_ble_gatts_cb_param_t::gatts_close_evt_param *close) = 0;
     virtual void  EventListen() = 0;
     virtual void  EventCongest(esp_ble_gatts_cb_param_t::gatts_congest_evt_param *congest) = 0;
-    virtual void  EventCreate(esp_ble_gatts_cb_param_t::gatts_add_attr_tab_evt_param *attrtab) = 0;
+    virtual void  EventCreate(esp_ble_gatts_cb_param_t::gatts_create_evt_param *attrtab) = 0;
     virtual void  EventAddChar(esp_ble_gatts_cb_param_t::gatts_add_char_evt_param *addchar) = 0;
     virtual void  EventAddCharDescr(esp_ble_gatts_cb_param_t::gatts_add_char_descr_evt_param *adddescr) = 0;
 

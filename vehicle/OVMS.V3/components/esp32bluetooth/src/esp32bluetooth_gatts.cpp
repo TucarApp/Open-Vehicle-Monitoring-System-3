@@ -337,13 +337,13 @@ void esp32bluetoothGATTS::EventHandler(esp_gatts_cb_event_t event,
 
             /* For the IOS system, please reference the apple official documents about the ble connection parameters restrictions. */
             conn_params.latency = 0;
-            conn_params.max_int = 0x30;    // max_int = 0x30*1.25ms = 40ms
+            conn_params.max_int = 0x20;    // max_int = 0x30*1.25ms = 40ms
             conn_params.min_int = 0x10;    // min_int = 0x10*1.25ms = 20ms
             conn_params.timeout = 400;     // timeout = 400*10ms = 4000ms
 
             //start sent the update connection parameters to the peer device.
             esp_ble_gap_update_conn_params(&conn_params);
-            esp_ble_set_encryption(param->connect.remote_bda, ESP_BLE_SEC_ENCRYPT_MITM);
+            // esp_ble_set_encryption(param->connect.remote_bda, ESP_BLE_SEC_ENCRYPT_MITM);
             }
           break;
           }
@@ -402,7 +402,7 @@ void esp32bluetoothGATTS::EventHandler(esp_gatts_cb_event_t event,
             app->m_name,
             param->create.status, param->create.service_handle);
           app->m_service_handle = param->create.service_handle;
-          app->EventCreate(&param->add_attr_tab);
+          app->EventCreate(&param->create);
           break;
         case ESP_GATTS_ADD_CHAR_EVT:
           ESP_LOGI(TAG, "ESP_GATTS_ADD_CHAR_EVT/%s status %d,  attr_handle %d, service_handle %d",

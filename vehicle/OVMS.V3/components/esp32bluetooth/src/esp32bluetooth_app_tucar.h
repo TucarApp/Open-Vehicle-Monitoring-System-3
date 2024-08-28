@@ -45,21 +45,21 @@ private:
 
 public:
   BluetoothCommandResponseBuffer(
-    std::vector<std::string>&& accepted_command_set);
-  void runCommand(std::string&& command);
+      std::vector<std::string> &&accepted_command_set);
+  void runCommand(std::string &&command);
   std::string fetchNextResponseChunk();
   bool hasMoreResponseChunks() const;
-  const std::string& getCommand() const;
+  const std::string &getCommand() const;
   void clearResponseChunks();
 
-  void resetPasscode(const std::string& passcode);
+  void resetPasscode(const std::string &passcode);
   void closeAuthenticatedSession();
   bool isAuthenticated() const;
 
 private:
   void executeCommand();
 
-  void startAuthenticatedSession(const std::string& command);
+  void startAuthenticatedSession(const std::string &command);
 
   std::string m_command;
   std::queue<std::string> m_command_response_chunks;
@@ -74,9 +74,14 @@ class OvmsBluetoothTucarApp : public esp32bluetoothApp
 public:
   OvmsBluetoothTucarApp();
 
+  static const size_t UUID_LEN;
+  static const uint16_t SERVICE_UUID;
+  static const uint16_t CHAR_UUID;
+  static const size_t NUM_HANDLE;
+
 public:
   void EventRegistered(esp_ble_gatts_cb_param_t::gatts_reg_evt_param *reg) override;
-  void EventCreate(esp_ble_gatts_cb_param_t::gatts_add_attr_tab_evt_param *attrtab) override;
+  void EventCreate(esp_ble_gatts_cb_param_t::gatts_create_evt_param *attrtab) override;
   void EventConnect(esp_ble_gatts_cb_param_t::gatts_connect_evt_param *connect) override;
   void EventDisconnect(esp_ble_gatts_cb_param_t::gatts_disconnect_evt_param *disconnect) override;
   void EventAddChar(esp_ble_gatts_cb_param_t::gatts_add_char_evt_param *addchar) override;
@@ -84,12 +89,12 @@ public:
   void EventRead(esp_ble_gatts_cb_param_t::gatts_read_evt_param *read) override;
   void EventWrite(esp_ble_gatts_cb_param_t::gatts_write_evt_param *write) override;
   void EventExecWrite(esp_ble_gatts_cb_param_t::gatts_exec_write_evt_param *execwrite) override;
+  void EventStart(esp_ble_gatts_cb_param_t::gatts_start_evt_param *start) override;
 
   void EventMTU(esp_ble_gatts_cb_param_t::gatts_mtu_evt_param *mtu) {}
   void EventConf(esp_ble_gatts_cb_param_t::gatts_conf_evt_param *conf) {}
   void EventUnregistered() {}
   void EventDelete(esp_ble_gatts_cb_param_t::gatts_delete_evt_param *del) {}
-  void EventStart(esp_ble_gatts_cb_param_t::gatts_start_evt_param *start) {}
   void EventStop(esp_ble_gatts_cb_param_t::gatts_stop_evt_param *stop) {}
   void EventOpen(esp_ble_gatts_cb_param_t::gatts_open_evt_param *open) {}
   void EventCancelOpen(esp_ble_gatts_cb_param_t::gatts_cancel_open_evt_param *cancelopen) {}
@@ -98,6 +103,11 @@ public:
   void EventCongest(esp_ble_gatts_cb_param_t::gatts_congest_evt_param *congest) {}
 
 private:
+  esp_bt_uuid_t m_char_uuid;
+  esp_bt_uuid_t m_descr_uuid;
+  uint16_t m_descr_handle;
+  uint16_t m_char_handle;
+
 };
 
-#endif //#ifndef __ESP32BLUETOOTH_APP_TUCAR_H__
+#endif // #ifndef __ESP32BLUETOOTH_APP_TUCAR_H__

@@ -49,7 +49,7 @@ class OvmsBluetoothAppMetrics : public esp32bluetoothApp
   public:
     void EventRegistered(esp_ble_gatts_cb_param_t::gatts_reg_evt_param *reg);
     void EventRead(esp_ble_gatts_cb_param_t::gatts_read_evt_param *read);
-    void EventCreate(esp_ble_gatts_cb_param_t::gatts_add_attr_tab_evt_param *attrtab);
+    void EventCreate(esp_ble_gatts_cb_param_t::gatts_create_evt_param *attrtab);
     void EventAddChar(esp_ble_gatts_cb_param_t::gatts_add_char_evt_param *addchar);
 
     void EventWrite(esp_ble_gatts_cb_param_t::gatts_write_evt_param *write) {}
