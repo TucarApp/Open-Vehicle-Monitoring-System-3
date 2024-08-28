@@ -86,91 +86,6 @@ esp32bluetoothApp::esp32bluetoothApp(const char* name)
   m_mtu = 0;
   }
 
-esp32bluetoothApp::~esp32bluetoothApp()
-  {
-  }
-
-void esp32bluetoothApp::EventRegistered(esp_ble_gatts_cb_param_t::gatts_reg_evt_param *reg)
-  {
-  }
-
-void esp32bluetoothApp::EventRead(esp_ble_gatts_cb_param_t::gatts_read_evt_param *read)
-  {
-  }
-
-void esp32bluetoothApp::EventWrite(esp_ble_gatts_cb_param_t::gatts_write_evt_param *write)
-  {
-  }
-
-void esp32bluetoothApp::EventExecWrite(esp_ble_gatts_cb_param_t::gatts_exec_write_evt_param *execwrite)
-  {
-  }
-
-void esp32bluetoothApp::EventMTU(esp_ble_gatts_cb_param_t::gatts_mtu_evt_param *mtu)
-  {
-  }
-
-void esp32bluetoothApp::EventConf(esp_ble_gatts_cb_param_t::gatts_conf_evt_param *conf)
-  {
-  }
-
-void esp32bluetoothApp::EventUnregistered()
-  {
-  }
-
-void esp32bluetoothApp::EventDelete(esp_ble_gatts_cb_param_t::gatts_delete_evt_param *del)
-  {
-  }
-
-void esp32bluetoothApp::EventStart(esp_ble_gatts_cb_param_t::gatts_start_evt_param *start)
-  {
-  }
-
-void esp32bluetoothApp::EventStop(esp_ble_gatts_cb_param_t::gatts_stop_evt_param *stop)
-  {
-  }
-
-void esp32bluetoothApp::EventConnect(esp_ble_gatts_cb_param_t::gatts_connect_evt_param *connect)
-  {
-  }
-
-void esp32bluetoothApp::EventDisconnect(esp_ble_gatts_cb_param_t::gatts_disconnect_evt_param *disconnect)
-  {
-  }
-
-void esp32bluetoothApp::EventOpen(esp_ble_gatts_cb_param_t::gatts_open_evt_param *open)
-  {
-  }
-
-void esp32bluetoothApp::EventCancelOpen(esp_ble_gatts_cb_param_t::gatts_cancel_open_evt_param *cancelopen)
-  {
-  }
-
-void esp32bluetoothApp::EventClose(esp_ble_gatts_cb_param_t::gatts_close_evt_param *close)
-  {
-  }
-
-void esp32bluetoothApp::EventListen()
-  {
-  }
-
-void esp32bluetoothApp::EventCongest(esp_ble_gatts_cb_param_t::gatts_congest_evt_param *congest)
-  {
-  }
-
-void esp32bluetoothApp::EventCreate(esp_ble_gatts_cb_param_t::gatts_add_attr_tab_evt_param *attrtab)
-  {
-  }
-
-void esp32bluetoothApp::EventAddChar(esp_ble_gatts_cb_param_t::gatts_add_char_evt_param *addchar)
-  {
-  }
-
-void esp32bluetoothApp::EventAddCharDescr(esp_ble_gatts_cb_param_t::gatts_add_char_descr_evt_param *adddescr)
-  {
-  }
-
-
 
 ////////////////////////////////////////////////////////////////////////
 // esp32bluetoothGATTS
@@ -237,17 +152,24 @@ void esp32bluetoothGATTS::EventHandler(esp_gatts_cb_event_t event,
           {
           ESP_LOGI(TAG, "ESP_GATTS_REG_EVT/%s",app->m_name);
 
-          std::string devname = MyConfig.GetParamValue("vehicle", "id");
-          if (devname.empty())
+          if (app->m_app_slot == 0)
             {
-            devname = std::string("OVMS");
+            std::string devname = MyConfig.GetParamValue("vehicle", "id");
+            if (devname.empty())
+              {
+              devname = std::string("OVMS");
+              }
+            else
+              {
+              devname.insert(0,"OVMS ");
+              }
+            esp_ble_gap_set_device_name(devname.c_str());
+
+            auto adv_data_conf = MyBluetoothGAP.GetAdvConfig();
+            esp_ble_gap_config_adv_data(&adv_data_conf);
+            adv_data_conf = MyBluetoothGAP.GetScanRspConfig();
+            esp_ble_gap_config_adv_data(&adv_data_conf);
             }
-          else
-            {
-            devname.insert(0,"OVMS ");
-            }
-          esp_ble_gap_set_device_name(devname.c_str());
-          esp_ble_gap_config_local_privacy(true);
 
           app->EventRegistered(&param->reg);
           break;
@@ -264,6 +186,9 @@ void esp32bluetoothGATTS::EventHandler(esp_gatts_cb_event_t event,
             param->write.conn_id, param->write.trans_id, param->write.handle,
             param->write.len);
           esp_log_buffer_hex(TAG, param->write.value, param->write.len);
+          ESP_LOGI(TAG, "ESP_GATTS_WRITE_EVT/%s value: %s",
+            app->m_name,
+            std::string((char*)param->write.value,param->write.len).c_str());
           app->EventWrite(&param->write);
           break;
         case ESP_GATTS_EXEC_WRITE_EVT:
@@ -334,13 +259,12 @@ void esp32bluetoothGATTS::EventHandler(esp_gatts_cb_event_t event,
 
             /* For the IOS system, please reference the apple official documents about the ble connection parameters restrictions. */
             conn_params.latency = 0;
-            conn_params.max_int = 0x30;    // max_int = 0x30*1.25ms = 40ms
+            conn_params.max_int = 0x20;    // max_int = 0x30*1.25ms = 40ms
             conn_params.min_int = 0x10;    // min_int = 0x10*1.25ms = 20ms
             conn_params.timeout = 400;     // timeout = 400*10ms = 4000ms
 
             //start sent the update connection parameters to the peer device.
             esp_ble_gap_update_conn_params(&conn_params);
-            esp_ble_set_encryption(param->connect.remote_bda, ESP_BLE_SEC_ENCRYPT_MITM);
             }
           break;
           }
@@ -399,7 +323,7 @@ void esp32bluetoothGATTS::EventHandler(esp_gatts_cb_event_t event,
             app->m_name,
             param->create.status, param->create.service_handle);
           app->m_service_handle = param->create.service_handle;
-          app->EventCreate(&param->add_attr_tab);
+          app->EventCreate(&param->create);
           break;
         case ESP_GATTS_ADD_CHAR_EVT:
           ESP_LOGI(TAG, "ESP_GATTS_ADD_CHAR_EVT/%s status %d,  attr_handle %d, service_handle %d",
