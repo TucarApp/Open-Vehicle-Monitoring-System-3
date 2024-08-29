@@ -31,12 +31,6 @@
 #define __VEHICLE_ME6_H__
 
 #include "vehicle_interface_tucar.h"
-#include "metrics_standard.h"
-
-#include "freertos/timers.h"
-
-#include <vector>
-
 
 using namespace std;
 

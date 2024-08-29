@@ -29,65 +29,57 @@
 #ifndef __VEHICLE_KIANIROEVSG2_H__
 #define __VEHICLE_KIANIROEVSG2_H__
 
-#include "../../vehicle_kiasoulev/src/kia_common.h"
-#include "vehicle.h"
-
+#include "vehicle_interface_tucar.h"
 
 using namespace std;
 
-class OvmsVehicleKiaNiroEvSg2 : public KiaVehicle
+class OvmsVehicleKiaNiroEvSg2 : public OvmsVehicleInterfaceTucar
+{
+public:
+  OvmsVehicleKiaNiroEvSg2();
+  ~OvmsVehicleKiaNiroEvSg2();
+
+public:
+  void IncomingFrameCan1(CAN_frame_t *p_frame) override;
+  void Ticker1(uint32_t ticker) override;
+  void IncomingPollReply(const OvmsPoller::poll_job_t &job, uint8_t *data, uint8_t length) override;
+
+  OvmsMetricBool *m_v_door_lock_fl;
+  OvmsMetricBool *m_v_door_lock_fr;
+  OvmsMetricBool *m_v_door_lock_rl;
+  OvmsMetricBool *m_v_door_lock_rr;
+
+protected:
+  void IncomingVMCU(canbus *bus, uint16_t type, uint16_t pid, const uint8_t *data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
+  void IncomingBMC(canbus *bus, uint16_t type, uint16_t pid, const uint8_t *data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
+  void IncomingBCM(canbus *bus, uint16_t type, uint16_t pid, const uint8_t *data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
+  void IncomingIGMP(canbus *bus, uint16_t type, uint16_t pid, const uint8_t *data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
+  void IncomingCM(canbus *bus, uint16_t type, uint16_t pid, const uint8_t *data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
+  void IncomingSW(canbus *bus, uint16_t type, uint16_t pid, const uint8_t *data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
+  struct
   {
-  public:
-    OvmsVehicleKiaNiroEvSg2();
-    ~OvmsVehicleKiaNiroEvSg2();
+    uint8_t byte[8];
+    uint8_t status;
+    uint16_t id;
+  } send_can;
 
-  public:
-    void IncomingFrameCan1(CAN_frame_t *p_frame) override;
-    void Ticker1(uint32_t ticker) override;
-    void IncomingPollReply(const OvmsPoller::poll_job_t &job, uint8_t *data, uint8_t length) override;
-    void SendTesterPresent(uint16_t id, uint8_t length);
-    bool SetSessionMode(uint16_t id, uint8_t mode);
-    void SendCanMessage(uint16_t id, uint8_t count,
-            uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
-            uint8_t b5, uint8_t b6);
-    void SendCanMessageTriple(uint16_t id, uint8_t count,
-            uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
-            uint8_t b5, uint8_t b6);
-    bool SendCanMessage_sync(uint16_t id, uint8_t count,
-              uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
-            uint8_t b5, uint8_t b6);
-    bool SendCommandInSessionMode(uint16_t id, uint8_t count,
-              uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
-              uint8_t b5, uint8_t b6, uint8_t mode);
+private:
+  enum class PollState
+  {
+    OFF,
+    RUNNING,
+    CHARGING
+  };
 
-  protected:
-    void IncomingVMCU(canbus *bus, uint16_t type, uint16_t pid, const uint8_t *data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
-    void IncomingBMC(canbus* bus, uint16_t type, uint16_t pid, const uint8_t* data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
-    void IncomingBCM(canbus* bus, uint16_t type, uint16_t pid, const uint8_t* data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
-    void IncomingIGMP(canbus* bus, uint16_t type, uint16_t pid, const uint8_t* data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
-    void IncomingCM(canbus* bus, uint16_t type, uint16_t pid, const uint8_t* data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
-    void IncomingSW(canbus* bus, uint16_t type, uint16_t pid, const uint8_t* data, uint8_t length, uint16_t mlframe, uint16_t mlremain);
-    void SendTesterPresentMessages();
-    void StopTesterPresentMessages();
-  
-  private:
+  void HandleCharging();
+  void HandleChargeStop();
+  void HandleCarOn();
+  void HandleCarOff();
 
-    enum class PollState
-      {
-        OFF,
-        RUNNING,
-        CHARGING
-      };
+  void SetChargeType();
+  void ResetChargeType();
 
-    void HandleCharging();
-    void HandleChargeStop();
-    void HandleCarOn();
-    void HandleCarOff();
-
-    void SetChargeType();
-    void ResetChargeType();
-
-    PollState GetPollState();
+  PollState GetPollState();
 
   };
 
