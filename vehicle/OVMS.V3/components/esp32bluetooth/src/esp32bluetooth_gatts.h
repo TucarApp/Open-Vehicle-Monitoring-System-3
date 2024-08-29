@@ -63,29 +63,29 @@ class esp32bluetoothApp
   {
   public:
     esp32bluetoothApp(const char* name);
-    ~esp32bluetoothApp();
+    ~esp32bluetoothApp() = default;
 
   public:
-    virtual void EventRegistered(esp_ble_gatts_cb_param_t::gatts_reg_evt_param *reg);
-    virtual void EventRead(esp_ble_gatts_cb_param_t::gatts_read_evt_param *read);
-    virtual void EventWrite(esp_ble_gatts_cb_param_t::gatts_write_evt_param *write);
-    virtual void EventExecWrite(esp_ble_gatts_cb_param_t::gatts_exec_write_evt_param *execwrite);
-    virtual void EventMTU(esp_ble_gatts_cb_param_t::gatts_mtu_evt_param *mtu);
-    virtual void EventConf(esp_ble_gatts_cb_param_t::gatts_conf_evt_param *conf);
-    virtual void EventUnregistered();
-    virtual void EventDelete(esp_ble_gatts_cb_param_t::gatts_delete_evt_param *del);
-    virtual void EventStart(esp_ble_gatts_cb_param_t::gatts_start_evt_param *start);
-    virtual void EventStop(esp_ble_gatts_cb_param_t::gatts_stop_evt_param *stop);
-    virtual void EventConnect(esp_ble_gatts_cb_param_t::gatts_connect_evt_param *connect);
-    virtual void EventDisconnect(esp_ble_gatts_cb_param_t::gatts_disconnect_evt_param *disconnect);
-    virtual void EventOpen(esp_ble_gatts_cb_param_t::gatts_open_evt_param *open);
-    virtual void EventCancelOpen(esp_ble_gatts_cb_param_t::gatts_cancel_open_evt_param *cancelopen);
-    virtual void EventClose(esp_ble_gatts_cb_param_t::gatts_close_evt_param *close);
-    virtual void EventListen();
-    virtual void EventCongest(esp_ble_gatts_cb_param_t::gatts_congest_evt_param *congest);
-    virtual void EventCreate(esp_ble_gatts_cb_param_t::gatts_add_attr_tab_evt_param *attrtab);
-    virtual void EventAddChar(esp_ble_gatts_cb_param_t::gatts_add_char_evt_param *addchar);
-    virtual void EventAddCharDescr(esp_ble_gatts_cb_param_t::gatts_add_char_descr_evt_param *adddescr);
+    virtual void  EventRegistered(esp_ble_gatts_cb_param_t::gatts_reg_evt_param *reg) = 0;
+    virtual void  EventRead(esp_ble_gatts_cb_param_t::gatts_read_evt_param *read) = 0;
+    virtual void  EventWrite(esp_ble_gatts_cb_param_t::gatts_write_evt_param *write) = 0;
+    virtual void  EventExecWrite(esp_ble_gatts_cb_param_t::gatts_exec_write_evt_param *execwrite) = 0;
+    virtual void  EventMTU(esp_ble_gatts_cb_param_t::gatts_mtu_evt_param *mtu) = 0;
+    virtual void  EventConf(esp_ble_gatts_cb_param_t::gatts_conf_evt_param *conf) = 0;
+    virtual void  EventUnregistered() = 0;
+    virtual void  EventDelete(esp_ble_gatts_cb_param_t::gatts_delete_evt_param *del) = 0;
+    virtual void  EventStart(esp_ble_gatts_cb_param_t::gatts_start_evt_param *start) = 0;
+    virtual void  EventStop(esp_ble_gatts_cb_param_t::gatts_stop_evt_param *stop) = 0;
+    virtual void  EventConnect(esp_ble_gatts_cb_param_t::gatts_connect_evt_param *connect) = 0;
+    virtual void  EventDisconnect(esp_ble_gatts_cb_param_t::gatts_disconnect_evt_param *disconnect) = 0;
+    virtual void  EventOpen(esp_ble_gatts_cb_param_t::gatts_open_evt_param *open) = 0;
+    virtual void  EventCancelOpen(esp_ble_gatts_cb_param_t::gatts_cancel_open_evt_param *cancelopen) = 0;
+    virtual void  EventClose(esp_ble_gatts_cb_param_t::gatts_close_evt_param *close) = 0;
+    virtual void  EventListen() = 0;
+    virtual void  EventCongest(esp_ble_gatts_cb_param_t::gatts_congest_evt_param *congest) = 0;
+    virtual void  EventCreate(esp_ble_gatts_cb_param_t::gatts_create_evt_param *attrtab) = 0;
+    virtual void  EventAddChar(esp_ble_gatts_cb_param_t::gatts_add_char_evt_param *addchar) = 0;
+    virtual void  EventAddCharDescr(esp_ble_gatts_cb_param_t::gatts_add_char_descr_evt_param *adddescr) = 0;
 
   public:
     const char* m_name;

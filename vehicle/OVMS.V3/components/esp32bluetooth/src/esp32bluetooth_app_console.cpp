@@ -65,7 +65,11 @@ OvmsBluetoothAppConsole::OvmsBluetoothAppConsole()
   m_console = NULL;
 
   m_app_id = GATTS_APP_UUID_OVMS_CONSOLE;
+
+/* Only include app if specified via kconfig. */
+#ifdef CONFIG_OVMS_COMP_BLUETOOTH_APP_CONSOLE
   MyBluetoothGATTS.RegisterApp(this);
+#endif
   }
 
 OvmsBluetoothAppConsole::~OvmsBluetoothAppConsole()
@@ -109,7 +113,7 @@ void OvmsBluetoothAppConsole::EventRegistered(esp_ble_gatts_cb_param_t::gatts_re
   esp_ble_gatts_create_service(m_gatts_if, &m_service_id, GATTS_NUM_HANDLE_OVMS_CONSOLE);
   }
 
-void OvmsBluetoothAppConsole::EventCreate(esp_ble_gatts_cb_param_t::gatts_add_attr_tab_evt_param *attrtab)
+void OvmsBluetoothAppConsole::EventCreate(esp_ble_gatts_cb_param_t::gatts_create_evt_param *attrtab)
   {
   m_char_uuid.len = ESP_UUID_LEN_16;
   m_char_uuid.uuid.uuid16 = GATTS_CHAR_UUID_OVMS_CONSOLE;
@@ -196,8 +200,10 @@ void OvmsBluetoothAppConsole::EventRead(esp_ble_gatts_cb_param_t::gatts_read_evt
 
 void OvmsBluetoothAppConsole::EventWrite(esp_ble_gatts_cb_param_t::gatts_write_evt_param *write)
   {
+  ESP_LOGI(TAG, "EventWrite");
   if (!write->is_prep)
     {
+    ESP_LOGI(TAG, "is_prep");
     if (m_descr_handle == write->handle && write->len == 2)
       {
       uint16_t descr_value = write->value[1]<<8 | write->value[0];
