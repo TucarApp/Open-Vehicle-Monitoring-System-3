@@ -42,11 +42,23 @@
 
 static const char *TAG = "bt-tucar-app";
 
+#define DEFAULT_BLE_APP_PSWD "tucar987"
+
 const std::string::size_type BluetoothCommandResponseBuffer::MAX_CHUNK_SIZE = 16;
 const std::string::size_type BluetoothCommandResponseBuffer::MAX_CHUNK_COUNT = 40;
 const std::string::size_type BluetoothCommandResponseBuffer::MAX_RESPONSE_SIZE =
   MAX_CHUNK_SIZE * MAX_CHUNK_COUNT;
 const std::string BluetoothCommandResponseBuffer::AUTH_CMD = "auth";
+
+#ifdef CONFIG_OVMS_TUCAR_BLE_APP_COMMAND_PSWD
+static const std::string TUCAR_APP_BLE_PSWD = CONFIG_OVMS_TUCAR_BLE_APP_COMMAND_PSWD;
+#ifdef CONFIG_OVMS_TUCAR_BUILD_TYPE_PROD
+static_assert(strcmp(CONFIG_OVMS_TUCAR_BLE_APP_COMMAND_PSWD, DEFAULT_BLE_APP_PSWD),
+  "Invalid BLE password. See Menuconfig: OVMS->Tucar Configurations");
+#endif // CONFIG_OVMS_TUCAR_BUILD_TYPE_PROD
+#else
+static const std::string TUCAR_APP_BLE_PSWD = DEFAULT_BLE_APP_PSWD;
+#endif // CONFIG_OVMS_TUCAR_BLE_APP_COMMAND_PSWD
 
 const size_t OvmsBluetoothTucarApp::UUID_LEN = ESP_UUID_LEN_16;
 const uint16_t OvmsBluetoothTucarApp::SERVICE_UUID = 0xffd0;
@@ -173,6 +185,11 @@ void BluetoothCommandResponseBuffer::startAuthenticatedSession(
     clearResponseChunks();
     m_command_response_chunks.push("ok");
   }
+  else
+  {
+    clearResponseChunks();
+    m_command_response_chunks.push("i");
+  }
 }
 
 void BluetoothCommandResponseBuffer::closeAuthenticatedSession()
@@ -191,7 +208,9 @@ OvmsBluetoothTucarApp::OvmsBluetoothTucarApp() :
   })
 {
   ESP_LOGI(TAG, "Created OvmsBluetoothTucarApp");
+#ifdef CONFIG_OVMS_TUCAR_BLE_APP
   MyBluetoothGATTS.RegisterApp(this);
+#endif // CONFIG_OVMS_TUCAR_BLE_APP
 }
 
 void OvmsBluetoothTucarApp::EventRegistered(
@@ -206,6 +225,8 @@ void OvmsBluetoothTucarApp::EventRegistered(
 
   auto ret = esp_ble_gatts_create_service(m_gatts_if, &m_service_id, NUM_HANDLE);
   if (ret) ESP_LOGE(TAG, "esp_ble_gatts_create_service failed, error code = %x", ret);
+
+  m_command_response_buffer.resetPasscode(TUCAR_APP_BLE_PSWD);
 }
 
 void OvmsBluetoothTucarApp::EventCreate(
@@ -246,6 +267,9 @@ void OvmsBluetoothTucarApp::EventDisconnect(
   esp_ble_gatts_cb_param_t::gatts_disconnect_evt_param *disconnect)
 {
   ESP_LOGI(TAG, "EventDisconnect");
+
+  m_command_response_buffer.clearResponseChunks();
+  m_command_response_buffer.closeAuthenticatedSession();
 }
 
 void OvmsBluetoothTucarApp::EventAddChar(
@@ -280,15 +304,19 @@ void OvmsBluetoothTucarApp::EventRead(
 {
   ESP_LOGI(TAG, "EventRead");
 
-  auto rsp_hex = string_to_hex_buffer("Hello, World!");
+  std::string response_chunk = "empty";
+  if (m_command_response_buffer.hasMoreResponseChunks())
+    response_chunk = m_command_response_buffer.fetchNextResponseChunk();
+  
+  auto response_in_hex = string_to_hex_buffer(response_chunk);
 
   esp_gatt_rsp_t rsp;
   memset(&rsp, 0, sizeof(esp_gatt_rsp_t));
   rsp.attr_value.handle = read->handle;
-  rsp.attr_value.len = rsp_hex.size();
+  rsp.attr_value.len = response_in_hex.size();
 
   size_t index = 0;
-  for (const auto& byte : rsp_hex)
+  for (const auto& byte : response_in_hex)
   {
     rsp.attr_value.value[index++] = byte;
   }
@@ -307,6 +335,9 @@ void OvmsBluetoothTucarApp::EventWrite(
   {
     esp_log_buffer_hex(TAG, write->value, write->len);
     esp_log_buffer_char(TAG, write->value, write->len);
+
+    m_command_response_buffer.runCommand(
+      hex_buffer_to_string(write->value, write->len));
 
     ESP_LOGI(TAG, "Value written: %s",
       hex_buffer_to_string(write->value, write->len).c_str());
