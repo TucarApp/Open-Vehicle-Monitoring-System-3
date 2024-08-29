@@ -1024,9 +1024,62 @@ config OVMS_TUCAR_BUILD_TYPE
     default "dev" if OVMS_TUCAR_BUILD_TYPE_DEV
 config OVMS_TUCAR_WIFI_AP_PSWD
     string "Device access point password"
-    default "tucarAP"
+    default "tucar"
     depends on OVMS
     help
         The password for the device access point
-
+config OVMS_TUCAR_SERVER_V3_USER
+    string "Server V3 user"
+    default "str"
+    depends on OVMS
+    help
+        The user to connect to the MQTT server
+config OVMS_TUCAR_SERVER_V3_SERVER
+    string "Server V3 server"
+    default "str"
+    depends on OVMS
+    help
+        The server url to connect to the MQTT server
+config OVMS_TUCAR_SERVER_V3_PSWD
+    string  "Server V3 password"
+    default "tucar"
+    depends on OVMS
+    help
+        The server password to connect to the MQTT server
+config OVMS_TUCAR_MODULE_PSWD
+    string "Module password"
+    default "tucar"
+    depends on OVMS
+    help
+        The password to access the module
+config OVMS_TUCAR_MODULE_PIN
+    string "Module pin"
+    default "tucar"
+    depends on OVMS
+    help
+        The pin to excecute actions in the module
+config OVMS_TUCAR_WIFI_1_SSID
+    string "wifi1 ap ssid"
+    default "tucar"
+    depends on OVMS
+    help
+        The first SSID to connect
+config OVMS_TUCAR_WIFI_2_SSID
+    string "wifi2 ap ssid"
+    default "tucar"
+    depends on OVMS
+    help
+        The second SSID to connect
+config OVMS_TUCAR_WIFI_1_PSWD
+    string "wifi1 ap password"
+    default "tucar"
+    depends on OVMS
+    help
+        The password for the first SSID to connect
+config OVMS_TUCAR_WIFI_2_PSWD
+    string "wifi2 ap password"
+    default "tucar"
+    depends on OVMS
+    help
+        The password for the second SSID to connect
 endmenu # Tucar Configurations

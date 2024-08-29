@@ -70,10 +70,16 @@ public:
   std::string getId() const;
 
 private:
-  void modemReceivedImei(std::string event, void* data);
+  void reconfigSystem(std::string event, void *data);
+  void reconfigId(std::string event, void *data);
+
   void setImei(const std::string& imei);
 
-  Optional<std::string> mImei;
+  Optional<std::string> m_Imei;
+  bool m_reset_by_config;
+  bool m_config_ready;
 };
+
+const TickType_t xDelay = 50 / portTICK_PERIOD_MS;
 
 #endif //#ifndef __VEHICLE_INTERFACE_TUCAR_H__
