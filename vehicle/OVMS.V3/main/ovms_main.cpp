@@ -47,7 +47,7 @@ static class FrameworkInit
       };
       ESP_ERROR_CHECK(esp_task_wdt_init(&config));
 #else
-      esp_task_wdt_init(120, true);
+      esp_task_wdt_init(250, true);
 #endif
 #else
       ESP_LOGI(TAG, "WATCHDOG already initialized...");

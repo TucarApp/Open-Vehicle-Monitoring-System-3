@@ -119,10 +119,10 @@ esp32bluetoothGAP::esp32bluetoothGAP()
   m_scan_rsp_config.p_manufacturer_data = ovms_manufacturer;
 
   memset(&m_adv_params,0,sizeof(m_adv_params));
-  m_adv_params.adv_int_min        = 0x100;
-  m_adv_params.adv_int_max        = 0x100;
+  m_adv_params.adv_int_min        = 0x20;
+  m_adv_params.adv_int_max        = 0x40;
   m_adv_params.adv_type           = ADV_TYPE_IND;
-  m_adv_params.own_addr_type      = BLE_ADDR_TYPE_RANDOM;
+  m_adv_params.own_addr_type      = BLE_ADDR_TYPE_PUBLIC;
   m_adv_params.channel_map        = ADV_CHNL_ALL;
   m_adv_params.adv_filter_policy  = ADV_FILTER_ALLOW_SCAN_ANY_CON_ANY;
   }
@@ -219,7 +219,6 @@ void esp32bluetoothGAP::EventHandler(esp_gap_ble_cb_event_t event,
       /* send the positive(true) security response to the peer device to accept the security request.
       If not accept the security request, should sent the security response with negative(false) accept value*/
       ESP_LOGI(TAG,"ESP_GAP_BLE_SEC_REQ_EVT");
-      esp_ble_gap_security_rsp(param->ble_security.ble_req.bd_addr, true);
       break;
     case ESP_GAP_BLE_PASSKEY_NOTIF_EVT:  ///the app will receive this evt when the IO  has Output capability and the peer device IO has Input capability.
       ///show the passkey number to the user to input it in the peer deivce.
@@ -231,61 +230,15 @@ void esp32bluetoothGAP::EventHandler(esp_gap_ble_cb_event_t event,
       break;
     case ESP_GAP_BLE_AUTH_CMPL_EVT:
       {
-      esp_bd_addr_t bd_addr;
-      memcpy(bd_addr, param->ble_security.auth_cmpl.bd_addr, sizeof(esp_bd_addr_t));
-      ESP_LOGI(TAG, "ESP_GAP_BLE_AUTH_CMPL_EVT remote BD_ADDR: %02x:%02x:%02x:%02x:%02x:%02x",
-              bd_addr[0], bd_addr[1], bd_addr[2],
-              bd_addr[3], bd_addr[4], bd_addr[5]);
-      ESP_LOGI(TAG, "address type = %d", param->ble_security.auth_cmpl.addr_type);
-      ESP_LOGI(TAG, "pair status = %s",param->ble_security.auth_cmpl.success ? "success" : "fail");
-      if (param->ble_security.auth_cmpl.success)
-        {
-        char signal[32];
-        sprintf(signal,"bt.auth.%02x:%02x:%02x:%02x:%02x:%02x",
-          bd_addr[0],
-          bd_addr[1],
-          bd_addr[2],
-          bd_addr[3],
-          bd_addr[4],
-          bd_addr[5]);
-        MyEvents.SignalEvent(signal, NULL);
-        }
       break;
       }
     case ESP_GAP_BLE_REMOVE_BOND_DEV_COMPLETE_EVT:
       {
       ESP_LOGI(TAG, "ESP_GAP_BLE_REMOVE_BOND_DEV_COMPLETE_EVT status = %d", param->remove_bond_dev_cmpl.status);
-      esp_log_buffer_hex(TAG, (void *)param->remove_bond_dev_cmpl.bd_addr, sizeof(esp_bd_addr_t));
       break;
       }
     case ESP_GAP_BLE_SET_LOCAL_PRIVACY_COMPLETE_EVT:
       {
-      if (param->local_privacy_cmpl.status != ESP_BT_STATUS_SUCCESS)
-        {
-        ESP_LOGE(TAG, "ESP_GAP_BLE_SET_LOCAL_PRIVACY_COMPLETE_EVT config local privacy failed, error status = %x", param->local_privacy_cmpl.status);
-        break;
-        }
-
-      esp_err_t ret = esp_ble_gap_config_adv_data(&m_adv_config);
-      if (ret)
-        {
-        ESP_LOGE(TAG, "ESP_GAP_BLE_SET_LOCAL_PRIVACY_COMPLETE_EVT config adv data failed, error code = %x", ret);
-        }
-      else
-        {
-        m_adv_config_done |= ADV_CONFIG_FLAG;
-        }
-
-      ret = esp_ble_gap_config_adv_data(&m_scan_rsp_config);
-      if (ret)
-        {
-        ESP_LOGE(TAG, "ESP_GAP_BLE_SET_LOCAL_PRIVACY_COMPLETE_EVT config adv data failed, error code = %x", ret);
-        }
-      else
-        {
-        ESP_LOGI(TAG, "ESP_GAP_BLE_SET_LOCAL_PRIVACY_COMPLETE_EVT config done");
-        m_adv_config_done |= SCAN_RSP_CONFIG_FLAG;
-        }
         break;
       }
     default:

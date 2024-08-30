@@ -49,8 +49,25 @@ class OvmsBluetoothAppMetrics : public esp32bluetoothApp
   public:
     void EventRegistered(esp_ble_gatts_cb_param_t::gatts_reg_evt_param *reg);
     void EventRead(esp_ble_gatts_cb_param_t::gatts_read_evt_param *read);
-    void EventCreate(esp_ble_gatts_cb_param_t::gatts_add_attr_tab_evt_param *attrtab);
+    void EventCreate(esp_ble_gatts_cb_param_t::gatts_create_evt_param *attrtab);
     void EventAddChar(esp_ble_gatts_cb_param_t::gatts_add_char_evt_param *addchar);
+
+    void EventWrite(esp_ble_gatts_cb_param_t::gatts_write_evt_param *write) {}
+    void EventExecWrite(esp_ble_gatts_cb_param_t::gatts_exec_write_evt_param *execwrite) {}
+    void EventMTU(esp_ble_gatts_cb_param_t::gatts_mtu_evt_param *mtu) {}
+    void EventConf(esp_ble_gatts_cb_param_t::gatts_conf_evt_param *conf) {}
+    void EventUnregistered() {}
+    void EventDelete(esp_ble_gatts_cb_param_t::gatts_delete_evt_param*) {}
+    void EventStart(esp_ble_gatts_cb_param_t::gatts_start_evt_param*) {}
+    void EventStop(esp_ble_gatts_cb_param_t::gatts_stop_evt_param*) {}
+    void EventConnect(esp_ble_gatts_cb_param_t::gatts_connect_evt_param *connect) {}
+    void EventDisconnect(esp_ble_gatts_cb_param_t::gatts_disconnect_evt_param *disconnect) {}
+    void EventCancelOpen(esp_ble_gatts_cb_param_t::gatts_cancel_open_evt_param*) {}
+    void EventOpen(esp_ble_gatts_cb_param_t::gatts_open_evt_param *open) {}
+    void EventClose(esp_ble_gatts_cb_param_t::gatts_close_evt_param *close) {}
+    void EventListen() {}
+    void EventCongest(esp_ble_gatts_cb_param_t::gatts_congest_evt_param*) {}
+    void EventAddCharDescr(esp_ble_gatts_cb_param_t::gatts_add_char_descr_evt_param *adddescr) {}
 
   private:
     uint16_t m_char_handle;

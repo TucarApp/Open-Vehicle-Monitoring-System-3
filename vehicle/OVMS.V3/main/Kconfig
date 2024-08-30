@@ -616,6 +616,21 @@ config OVMS_VEHICLE_BYD_ATTO3
     depends on OVMS_COMP_POLLER
     help
         Enable support for BYD Atto 3
+config OVMS_VEHICLE_NETA_AYA
+    bool "Include support for Neta Aya"
+    default y
+    depends on OVMS
+    depends on OVMS_COMP_POLLER
+    help
+        Enable support for Neta Aya
+
+config OVMS_VEHICLE_KIANIROEVSG2
+    bool "Include support for Kia Niro EV SG2"
+    default y
+    depends on OVMS
+    depends on OVMS_COMP_POLLER
+    help
+        Enable support for Kia Niro EV SG2
 
 config OVMS_VEHICLE_MAPLE60S
     bool "Include support for Maple 60s"
@@ -624,6 +639,30 @@ config OVMS_VEHICLE_MAPLE60S
     depends on OVMS_COMP_POLLER
     help
         Enable support for Maple 60s
+
+config OVMS_VEHICLE_DONGFENG_E60
+    bool "Include support for Dong Feng E60"
+    default y
+    depends on OVMS
+    depends on OVMS_COMP_POLLER
+    help
+        Enable support for Dong Feng E60
+
+config OVMS_VEHICLE_MAPLE60S
+    bool "Include support for Maple 60s"
+    default y
+    depends on OVMS
+    depends on OVMS_COMP_POLLER
+    help
+        Enable support for Maple 60s
+
+config OVMS_VEHICLE_DONGFENG_E60
+    bool "Include support for Dong Feng E60"
+    default y
+    depends on OVMS
+    depends on OVMS_COMP_POLLER
+    help
+        Enable support for Dong Feng E60
 
 config OVMS_VEHICLE_ZOMBIE_VCU
     bool "Include support for EVBMW Zombieverter VCU"
@@ -657,13 +696,31 @@ endmenu # Vehicle Support
 menu "Component Options"
     depends on OVMS
 
-config OVMS_COMP_BLUETOOTH
+menuconfig OVMS_COMP_BLUETOOTH
     bool "Include support for Bluetooth"
     default y
     depends on OVMS
     depends on BT_ENABLED
     help
         Enable to include support for bluetooth communications.
+config OVMS_COMP_BLUETOOTH_APP_CONSOLE
+    bool "Include support for Bluetooth Console"
+    default y
+    depends on OVMS_COMP_BLUETOOTH
+    help 
+        Enable to include support for Bluetooth Console
+config OVMS_COMP_BLUETOOTH_APP_DEVICE
+    bool "Include support for Bluetooth Device"
+    default y
+    depends on OVMS_COMP_BLUETOOTH
+    help
+        Enable to include support for Bluetooth Device
+config OVMS_COMP_BLUETOOTH_APP_METRICS
+    bool "Include support for Bluetooth Metrics"
+    default y
+    depends on OVMS_COMP_BLUETOOTH
+    help
+        Enable to include support for Bluetooth Metrics
 
 config OVMS_COMP_WIFI
     bool "Include support for WIFI"
@@ -955,3 +1012,105 @@ config OVMS_DEV_NETMANAGER_PING
         Enable to add 'network ping' command
 
 endmenu # Developer Options
+
+
+menu "Tucar Configurations"
+    depends on OVMS
+choice
+    prompt "Build type"
+    default OVMS_TUCAR_BUILD_TYPE_PROD
+    depends on OVMS
+    help
+        Select the build type for the device.
+
+config OVMS_TUCAR_BUILD_TYPE_PROD
+    bool "prod"
+    help
+        Production build type.
+
+config OVMS_TUCAR_BUILD_TYPE_DEV
+    bool "dev"
+    help
+        Development build type.
+endchoice
+config OVMS_TUCAR_BUILD_TYPE
+    string
+    default "prod" if OVMS_TUCAR_BUILD_TYPE_PROD
+    default "dev" if OVMS_TUCAR_BUILD_TYPE_DEV
+config OVMS_TUCAR_WIFI_AP_PSWD
+    string "Device access point password"
+    default "tucar"
+    depends on OVMS
+    help
+        The password for the device access point
+
+config OVMS_TUCAR_BLE_APP
+    bool "Enable Tucar BLE app"
+    default "Tucar"
+    depends on OVMS
+    help
+        Enable the Tucar BLE app
+config OVMS_TUCAR_BLE_APP_COMMAND_PSWD
+    string "BLE app command password"
+    default "tucar987"
+    depends on OVMS && OVMS_TUCAR_BLE_APP
+    help
+        The password for the BLE app command
+
+
+config OVMS_TUCAR_SERVER_V3_USER
+    string "Server V3 user"
+    default "str"
+    depends on OVMS
+    help
+        The user to connect to the MQTT server
+config OVMS_TUCAR_SERVER_V3_SERVER
+    string "Server V3 server"
+    default "str"
+    depends on OVMS
+    help
+        The server url to connect to the MQTT server
+config OVMS_TUCAR_SERVER_V3_PSWD
+    string  "Server V3 password"
+    default "tucar"
+    depends on OVMS
+    help
+        The server password to connect to the MQTT server
+config OVMS_TUCAR_MODULE_PSWD
+    string "Module password"
+    default "tucar"
+    depends on OVMS
+    help
+        The password to access the module
+config OVMS_TUCAR_MODULE_PIN
+    string "Module pin"
+    default "tucar"
+    depends on OVMS
+    help
+        The pin to excecute actions in the module
+config OVMS_TUCAR_WIFI_1_SSID
+    string "wifi1 ap ssid"
+    default "tucar"
+    depends on OVMS
+    help
+        The first SSID to connect
+config OVMS_TUCAR_WIFI_2_SSID
+    string "wifi2 ap ssid"
+    default "tucar"
+    depends on OVMS
+    help
+        The second SSID to connect
+config OVMS_TUCAR_WIFI_1_PSWD
+    string "wifi1 ap password"
+    default "tucar"
+    depends on OVMS
+    help
+        The password for the first SSID to connect
+config OVMS_TUCAR_WIFI_2_PSWD
+    string "wifi2 ap password"
+    default "tucar"
+    depends on OVMS
+    help
+        The password for the second SSID to connect
+
+endmenu # Tucar Configurations

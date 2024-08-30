@@ -97,6 +97,7 @@ class OvmsServerV3 : public OvmsServer
     int m_connretry;
     int m_connection_counter;
     bool m_sendall;
+    int m_accept_command;
     int m_msgid;
     int m_lasttx;
     int m_lasttx_sendall;
