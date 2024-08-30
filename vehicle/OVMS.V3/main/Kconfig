@@ -358,6 +358,13 @@ config OVMS_VEHICLE_DEMO
     help
         Enable to include support for demonstration vehicles.
 
+config OVMS_VEHICLE_ENERGICA
+    bool "Include support for Energica motorbikes"
+    default y
+    depends on OVMS
+    help
+        Enable to include support for Energica motorbikes
+
 config OVMS_VEHICLE_TESLAROADSTER
     bool "Include support for Tesla Roadster vehicles"
     default y
@@ -656,6 +663,14 @@ config OVMS_VEHICLE_DONGFENG_E60
     depends on OVMS_COMP_POLLER
     help
         Enable support for Dong Feng E60
+
+config OVMS_VEHICLE_ZOMBIE_VCU
+    bool "Include support for EVBMW Zombieverter VCU"
+    default y
+    depends on OVMS
+    depends on OVMS_COMP_POLLER
+    help
+        Enable to include support for EVBMW Zombieverter VCU.
 
 config OVMS_VEHICLE_RXTASK_STACK
     int "Stack size for ISOTP Poller RX task"

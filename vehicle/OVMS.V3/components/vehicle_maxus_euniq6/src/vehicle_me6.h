@@ -32,7 +32,6 @@
 
 #include "vehicle_interface_tucar.h"
 
-using namespace std;
 
 class OvmsVehicleMaxe6 : public OvmsVehicleInterfaceTucar
 {
