@@ -199,7 +199,6 @@ void OvmsVehicleKiaNiroEvSg2::Ticker1(uint32_t ticker)
 void OvmsVehicleKiaNiroEvSg2::HandleCharging()
   {
   POLLSTATE_CHARGING;
-  ESP_LOGI(TAG, "CAR IS CHARGING | POLLSTATE CHARGING");
 
   SetChargeType();
   }
@@ -209,7 +208,6 @@ void OvmsVehicleKiaNiroEvSg2::HandleCharging()
  */
 void OvmsVehicleKiaNiroEvSg2::HandleChargeStop()
   {  
-  ESP_LOGI(TAG, "CAR CHARGING STOPPED");
   ResetChargeType();
   }
 
@@ -219,7 +217,6 @@ void OvmsVehicleKiaNiroEvSg2::HandleChargeStop()
 void OvmsVehicleKiaNiroEvSg2::HandleCarOn()
   {
   POLLSTATE_RUNNING;
-  ESP_LOGI(TAG, "CAR IS ON | POLLSTATE RUNNING");
   }
 
 /**
@@ -228,7 +225,6 @@ void OvmsVehicleKiaNiroEvSg2::HandleCarOn()
 void OvmsVehicleKiaNiroEvSg2::HandleCarOff()
   {
   POLLSTATE_OFF;
-  ESP_LOGI(TAG, "CAR IS OFF | POLLSTATE OFF");
   }
 
 /**

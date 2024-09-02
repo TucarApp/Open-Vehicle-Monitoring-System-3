@@ -629,24 +629,9 @@ config OVMS_VEHICLE_KIANIROEVSG2
     default y
     depends on OVMS
     depends on OVMS_COMP_POLLER
+    depends on OVMS_VEHICLE_KIASOULEV
     help
         Enable support for Kia Niro EV SG2
-
-config OVMS_VEHICLE_MAPLE60S
-    bool "Include support for Maple 60s"
-    default y
-    depends on OVMS
-    depends on OVMS_COMP_POLLER
-    help
-        Enable support for Maple 60s
-
-config OVMS_VEHICLE_DONGFENG_E60
-    bool "Include support for Dong Feng E60"
-    default y
-    depends on OVMS
-    depends on OVMS_COMP_POLLER
-    help
-        Enable support for Dong Feng E60
 
 config OVMS_VEHICLE_MAPLE60S
     bool "Include support for Maple 60s"
