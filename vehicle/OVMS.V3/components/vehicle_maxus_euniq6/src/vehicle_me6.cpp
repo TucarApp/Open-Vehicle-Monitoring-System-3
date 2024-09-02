@@ -78,6 +78,11 @@ OvmsVehicleMaxe6::OvmsVehicleMaxe6()
 
   PollSetThrottling(10);
   PollSetState(0); // OFF
+  result = setParamConfig("auto", "vehicle.type", "ME6");
+  if (result != ParamSetResult::Fail)
+  {
+    ESP_LOGE(TAG, "Error setting vehicle.type");
+  }
 }
 
 OvmsVehicleMaxe6::~OvmsVehicleMaxe6()
