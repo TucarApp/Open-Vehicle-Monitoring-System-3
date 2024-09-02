@@ -425,12 +425,13 @@ namespace
   }
 } // namespace
 
-OvmsVehicleInterfaceTucar::OvmsVehicleInterfaceTucar()
+OvmsVehicleInterfaceTucar::OvmsVehicleInterfaceTucar() :
+  m_imei(),
+  m_reset_by_config(false),
+  m_config_ready(false)
 {
-
   ESP_LOGI(TAG, "Initialising Tucar Vehicle Interface");
-  m_reset_by_config = false;
-  m_config_ready = false;
+
   /* Set imei once modem has received it. */
   MyEvents.RegisterEvent(
       TAG, "system.modem.received.imei",
@@ -453,17 +454,17 @@ OvmsVehicleInterfaceTucar::OvmsVehicleInterfaceTucar()
 
 bool OvmsVehicleInterfaceTucar::hasImei() const
 {
-  return m_Imei.hasValue();
+  return m_imei.hasValue();
 }
 
 std::string OvmsVehicleInterfaceTucar::getImei() const
 {
-  return m_Imei.getValue();
+  return m_imei.getValue();
 }
 
 void OvmsVehicleInterfaceTucar::setImei(const std::string &imei)
 {
-  m_Imei.setValue(imei);
+  m_imei.setValue(imei);
 }
 
 std::string OvmsVehicleInterfaceTucar::getId() const
