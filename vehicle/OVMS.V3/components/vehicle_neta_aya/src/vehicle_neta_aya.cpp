@@ -91,11 +91,6 @@ OvmsVehicleNetaAya::OvmsVehicleNetaAya()
 {
   ESP_LOGI(TAG, "Neta Aya vehicle module");
 
-  send_can_buffer.id = 0;
-  send_can_buffer.status = 0;
-
-  memset(send_can_buffer.byte, 0, sizeof(send_can_buffer.byte));
-
   StdMetrics.ms_v_charge_inprogress->SetValue(false);
   StdMetrics.ms_v_env_on->SetValue(false);
 

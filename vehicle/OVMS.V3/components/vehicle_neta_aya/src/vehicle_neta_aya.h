@@ -64,12 +64,6 @@ private:
 
   PollState GetPollState() const;
 
-  struct
-  {
-    uint8_t byte[8];
-    uint8_t status;
-    uint16_t id;
-  } send_can_buffer;
   };
 
 #endif //#ifndef __VEHICLE_NETAAYA_H__
