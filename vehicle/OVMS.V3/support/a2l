@@ -1,5 +1,17 @@
 #!/bin/bash
-elf=~/esp/Open-Vehicle-Monitoring-System-3/vehicle/OVMS.V3/build/ovms3.elf
+
+current_dir=$(pwd)
+
+ovms_count=$(echo $current_dir | grep -o "OVMS.V3" | wc -l)
+
+if [ $ovms_count -gt 1 ]; then
+  echo "Error: More than one OVMS.V3 directory found in the path"
+  exit 1
+fi
+
+root_dir=$(echo "$current_dir" | sed 's|\(.*OVMS.V3\).*|\1|')
+elf="$root_dir/build/ovms3.elf"
+
 for adr in $* ; do
   if [[ "$adr" =~ "elf" ]] ; then
     elf="$adr"

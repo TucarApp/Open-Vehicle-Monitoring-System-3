@@ -55,6 +55,7 @@
 #define MS_N_GOOD_SQ                "m.net.good.sq"
 #define MS_N_PROVIDER               "m.net.provider"
 #define MS_N_MDM_ICCID              "m.net.mdm.iccid"
+#define MS_N_MDM_IMEI               "m.net.mdm.imei"
 #define MS_N_MDM_MODEL              "m.net.mdm.model"
 #define MS_N_MDM_NETREG             "m.net.mdm.netreg"
 #define MS_N_MDM_NETWORK            "m.net.mdm.network"
@@ -200,11 +201,14 @@
 #define MS_V_DOOR_TRUNK             "v.d.trunk"
 
 #define MS_V_ENV_DRIVEMODE          "v.e.drivemode"
+#define MS_V_ENV_EFFICIENCYMODE     "v.e.efficiencymode"
+#define MS_V_ENV_REGENLEVEL         "v.e.regenlevel"
 #define MS_V_ENV_GEAR               "v.e.gear"
 #define MS_V_ENV_THROTTLE           "v.e.throttle"
 #define MS_V_ENV_FOOTBRAKE          "v.e.footbrake"
 #define MS_V_ENV_HANDBRAKE          "v.e.handbrake"
 #define MS_V_ENV_REGENBRAKE         "v.e.regenbrake"
+#define MS_V_ENV_ONEPEDAL           "v.e.onepedal"
 #define MS_V_ENV_AWAKE              "v.e.awake"
 #define MS_V_ENV_CHARGING12V        "v.e.charging12v"
 #define MS_V_ENV_AUX12V             "v.e.aux12v"
@@ -298,6 +302,7 @@ class MetricsStandard
     OvmsMetricString* ms_m_net_mdm_network;               // Modem network operator
     OvmsMetricFloat*  ms_m_net_mdm_sq;                    // Modem network signal quality [dbm]
     OvmsMetricString* ms_m_net_mdm_iccid;                 // ICCID of SIM card in modem
+    OvmsMetricString *ms_m_net_mdm_imei;                  // ICCID of SIM card in modem
     OvmsMetricString* ms_m_net_mdm_model;                 // Model of modem discovered
     OvmsMetricString* ms_m_net_mdm_mode;                  // Cellular connection mode and status
     OvmsMetricBool*  ms_m_net_connected;                  // True = connected_any is true
@@ -472,11 +477,14 @@ class MetricsStandard
     OvmsMetricBool*   ms_v_env_awake;                     // Vehicle is fully awake (switched on by the user)
     OvmsMetricBool*   ms_v_env_on;                        // Vehicle is in "ignition" state (drivable)
     OvmsMetricInt*    ms_v_env_drivemode;                 // Active drive profile number [1]
+    OvmsMetricString* ms_v_env_efficiencymode;            // Active efficiency profile number [1]
     OvmsMetricInt*    ms_v_env_gear;                      // Gear/direction; negative=reverse, 0=neutral [1]
+    OvmsMetricFloat*  ms_v_env_regenlevel;                 // regen level activaed
     OvmsMetricFloat*  ms_v_env_throttle;                  // Drive pedal state [%]
     OvmsMetricFloat*  ms_v_env_footbrake;                 // Brake pedal state [%]
     OvmsMetricBool*   ms_v_env_handbrake;                 // Handbrake state
     OvmsMetricBool*   ms_v_env_regenbrake;                // Regenerative braking state
+    OvmsMetricBool*   ms_v_env_onepedal;                    // If one pedal driving is active
     OvmsMetricBool*   ms_v_env_cooling;
     OvmsMetricBool*   ms_v_env_heating;
     OvmsMetricBool*   ms_v_env_hvac;                      // Climate control system state

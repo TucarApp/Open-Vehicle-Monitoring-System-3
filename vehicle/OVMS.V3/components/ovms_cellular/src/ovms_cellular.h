@@ -68,6 +68,8 @@ class modem : public pcp, public InternalRamAllocated
     float m_good_dbm;
     float m_bad_dbm;
     bool m_good_signal;
+    std::string m_pos_imei;
+    int m_pos_imei_counter;
 
   public:
     typedef enum

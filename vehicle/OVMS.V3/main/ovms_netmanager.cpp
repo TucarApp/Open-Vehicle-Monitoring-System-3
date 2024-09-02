@@ -888,7 +888,12 @@ void OvmsNetManager::DoSafePrioritiseAndIndicate()
     SetNetType("wifi");
     search = "st";
     dns = m_dns_wifi;
+
+#ifdef CONFIG_OVMS_COMP_WIFI
     m_has_ip = MyPeripherals->m_esp32wifi->WifiHasIp();
+#else
+    m_has_ip = false;
+#endif // CONFIG_OVMS_COMP_WIFI
     }
   else if (m_connected_modem)
     {

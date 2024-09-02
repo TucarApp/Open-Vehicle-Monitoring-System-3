@@ -170,6 +170,7 @@ void OvmsVehicleMaxe6::IncomingFrameCan1(CAN_frame_t *p_frame)
       break;
   }
 }
+
 void OvmsVehicleMaxe6::IncomingPollReply(const OvmsPoller::poll_job_t &job, uint8_t *data, uint8_t length)
 {
 	switch (job.moduleid_rec)

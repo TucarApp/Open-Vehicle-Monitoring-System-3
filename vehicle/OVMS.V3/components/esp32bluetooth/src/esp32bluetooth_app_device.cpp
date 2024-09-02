@@ -98,7 +98,7 @@ void OvmsBluetoothAppDevice::EventRead(esp_ble_gatts_cb_param_t::gatts_read_evt_
                               ESP_GATT_OK, &rsp);
   }
 
-void OvmsBluetoothAppDevice::EventCreate(esp_ble_gatts_cb_param_t::gatts_add_attr_tab_evt_param *attrtab)
+void OvmsBluetoothAppDevice::EventCreate(esp_ble_gatts_cb_param_t::gatts_create_evt_param *attrtab)
   {
   m_char_uuid.len = ESP_UUID_LEN_16;
   m_char_uuid.uuid.uuid16 = GATTS_CHAR_UUID_OVMS_DEVICE;

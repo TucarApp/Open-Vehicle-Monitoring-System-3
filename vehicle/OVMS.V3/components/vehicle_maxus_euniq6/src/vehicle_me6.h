@@ -30,17 +30,11 @@
 #ifndef __VEHICLE_ME6_H__
 #define __VEHICLE_ME6_H__
 
-#include "vehicle.h"
-#include "metrics_standard.h"
 
-#include "freertos/timers.h"
-
-#include <vector>
+#include "vehicle_interface_tucar.h"
 
 
-using namespace std;
-
-class OvmsVehicleMaxe6 : public OvmsVehicle
+class OvmsVehicleMaxe6 : public OvmsVehicleInterfaceTucar
 {
 public:
 
@@ -73,4 +67,3 @@ private:
 };
 
 #endif //#ifndef __VEHICLE_ME6_H__
-
