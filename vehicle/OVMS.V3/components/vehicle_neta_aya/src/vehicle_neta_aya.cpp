@@ -64,8 +64,6 @@ static const char *TAG = "v-netaAya";
 #define TO_CELCIUS(n)  ((float)n-40)
 #define TO_PSI(n)    ((float)n/4.0)
 
-static const TickType_t xDelay = 50 / portTICK_PERIOD_MS;
-
 // Pollstate 0 - car is off
 // Pollstate 1 - car is on
 // Pollstate 2 - car is charging
