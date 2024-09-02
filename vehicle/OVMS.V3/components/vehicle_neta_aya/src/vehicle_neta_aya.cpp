@@ -171,23 +171,19 @@ void OvmsVehicleNetaAya::Ticker1(uint32_t ticker)
 void OvmsVehicleNetaAya::HandleCarOn()
 {
   POLLSTATE_RUNNING;
-  ESP_LOGI(TAG, "CAR IS ON | POLLSTATE RUNNING");
 }
 void OvmsVehicleNetaAya::HandleCarOff()
 {
   POLLSTATE_OFF;
-  ESP_LOGI(TAG, "CAR IS OFF | POLLSTATE OFF");
 }
 void OvmsVehicleNetaAya::HandleCharging()
 {
   POLLSTATE_CHARGING;
-  ESP_LOGI(TAG, "CAR IS CHARGING | POLLSTATE RUNNING");
   ReadChargeType();
 }
 
 void OvmsVehicleNetaAya::HandleChargeStop()
 {
-  ESP_LOGI(TAG, "Charging done...");
   ResetChargeType();
 }
 
@@ -258,27 +254,6 @@ void OvmsVehicleNetaAya::IncomingFrameCan1(CAN_frame_t *p_frame)
   }
 }
 
-void OvmsVehicleNetaAya::IncomingFrameCan2(CAN_frame_t *p_frame)
-{
-  uint8_t *d = p_frame->data.u8;
-
-  // Check if response is from synchronous can message
-  if (send_can_buffer.status == 0xff && p_frame->MsgID == (send_can_buffer.id + 0x08))
-  {
-    // Store message bytes so that the async method can continue
-    send_can_buffer.status = 3;
-
-    send_can_buffer.byte[0] = d[0];
-    send_can_buffer.byte[1] = d[1];
-    send_can_buffer.byte[2] = d[2];
-    send_can_buffer.byte[3] = d[3];
-    send_can_buffer.byte[4] = d[4];
-    send_can_buffer.byte[5] = d[5];
-    send_can_buffer.byte[6] = d[6];
-    send_can_buffer.byte[7] = d[7];
-  }
-}
-
 void OvmsVehicleNetaAya::IncomingPollReply(const OvmsPoller::poll_job_t &job, uint8_t *data, uint8_t length)
 {
   switch (job.moduleid_rec)
@@ -346,42 +321,6 @@ void OvmsVehicleNetaAya::IncomingPollReply(const OvmsPoller::poll_job_t &job, ui
       break;
   }
 }
-
-void OvmsVehicleNetaAya::SendCanMessage(uint16_t id, uint8_t count,
-                       uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
-                       uint8_t b5, uint8_t b6)
-{
-  send_can_buffer.id = id;
-  send_can_buffer.status = 0xff;
-  uint8_t data[] = {count, serviceId, b1, b2, b3, b4, b5, b6};
-  m_can1->WriteStandard(id, 8, data);
-  ESP_LOGV(TAG, "%03x 8 %02x %02x %02x %02x %02x %02x %02x %02x", id, data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]);
-}
-
-void OvmsVehicleNetaAya::SendCanMessageSecondary(uint16_t id, uint8_t count,
-                       uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
-                       uint8_t b5, uint8_t b6)
-{  
-  uint8_t data[] = {count, serviceId, b1, b2, b3, b4, b5, b6};
-  m_can2->WriteStandard(id, 8, data);
-  ESP_LOGV(TAG, "%03x 8 %02x %02x %02x %02x %02x %02x %02x %02x", id, data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]);
-}
-
-void OvmsVehicleNetaAya::SendCanMessageTriple(uint16_t id, uint8_t count,
-                           uint8_t serviceId, uint8_t b1, uint8_t b2, uint8_t b3, uint8_t b4,
-                           uint8_t b5, uint8_t b6)
-{
-
-  uint8_t data[] = {count, serviceId, b1, b2, b3, b4, b5, b6};
-  m_can1->WriteStandard(id, 8, data);
-  vTaskDelay(xDelay);
-  m_can1->WriteStandard(id, 8, data);
-  vTaskDelay(xDelay);
-  m_can1->WriteStandard(id, 8, data);
-  ESP_LOGV(TAG, "%03x 8 %02x %02x %02x %02x %02x %02x %02x %02x", id, data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]);
-}
-
-
 
 class OvmsVehicleNetaAyaInit
 {
