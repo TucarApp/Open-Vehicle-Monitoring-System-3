@@ -109,6 +109,11 @@ OvmsVehicleNetaAya::OvmsVehicleNetaAya()
 
   POLLSTATE_OFF;
   PollSetPidList(m_can2, vehicle_neta_polls);
+  result = setParamConfig("auto", "vehicle.type", "NTA");
+  if (result != ParamSetResult::Fail)
+  {
+    ESP_LOGE(TAG, "Error setting vehicle.type");
+  }
 }
 
 /**

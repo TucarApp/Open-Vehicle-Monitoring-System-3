@@ -66,6 +66,11 @@ OvmsVehicleMaple60S::OvmsVehicleMaple60S()
   MyEvents.SignalEvent("vehicle.require.gpstime", NULL);
 
   RegisterCanBus(1, CAN_MODE_LISTEN, CAN_SPEED_500KBPS);
+  result = setParamConfig("auto", "vehicle.type", "MPL60S");
+  if (result != ParamSetResult::Fail)
+  {
+    ESP_LOGE(TAG, "Error setting vehicle.type");
+  }
 }
 
 OvmsVehicleMaple60S::~OvmsVehicleMaple60S()
