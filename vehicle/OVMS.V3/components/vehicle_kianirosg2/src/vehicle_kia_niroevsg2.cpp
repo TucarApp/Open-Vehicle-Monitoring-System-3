@@ -104,11 +104,8 @@ OvmsVehicleKiaNiroEvSg2::OvmsVehicleKiaNiroEvSg2()
   RegisterCanBus(1, CAN_MODE_ACTIVE, CAN_SPEED_500KBPS);
   POLLSTATE_OFF;
   PollSetPidList(m_can1, vehicle_kianiroevsg2_polls);
-  auto result = setParamConfig("auto", "vehicle.type", "KN2");
-  if (result != ParamSetResult::Fail)
-    {
-    ESP_LOGE(TAG, "Error setting vehicle.type");
-    }
+
+  MyConfig.SetParamValue("auto", "paramKey", "KN2");
   }
 
 /**
