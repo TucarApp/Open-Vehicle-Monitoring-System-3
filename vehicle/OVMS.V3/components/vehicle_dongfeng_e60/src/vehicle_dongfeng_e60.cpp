@@ -82,7 +82,7 @@ OvmsVehicleDFE60::OvmsVehicleDFE60()
 	can_message_buffer.status = 0;
 
 	RegisterCanBus(1, CAN_MODE_ACTIVE, CAN_SPEED_500KBPS);
-	result = setParamConfig("auto", "vehicle.type", "DFE60");
+	auto result = setParamConfig("auto", "vehicle.type", "DFE60");
 	if (result != ParamSetResult::Fail)
 		{
 		ESP_LOGE(TAG, "Error setting vehicle.type");
