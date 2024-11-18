@@ -13,6 +13,7 @@ gitGraph
    commit
    commit
    checkout master
+   commit
    merge openvehicles/master/Open-Vehicle-Monitoring-System-3
    branch tardis
    branch master-internal
@@ -33,11 +34,13 @@ gitGraph
    commit
    commit
    checkout master
+   commit
    merge openvehicles/master/Open-Vehicle-Monitoring-System-3
    branch tucar/feat/feat_a
    commit
    commit
    checkout tardis
+   commit
    merge master
    checkout openvehicles/master/Open-Vehicle-Monitoring-System-3
    merge tucar/feat/feat_a
@@ -51,6 +54,7 @@ gitGraph
    merge tardis
    commit
    checkout master
+   commit
    merge openvehicles/master/Open-Vehicle-Monitoring-System-3
    checkout master-internal
    commit
@@ -71,6 +75,7 @@ gitGraph
    merge tucar/feat/feat_b
    commit
    checkout master
+   commit
    merge openvehicles/master/Open-Vehicle-Monitoring-System-3
    checkout master-internal
    merge tardis
@@ -83,6 +88,7 @@ gitGraph
    commit
    commit
    checkout master
+   commit
    merge openvehicles/master/Open-Vehicle-Monitoring-System-3
    checkout openvehicles/master/Open-Vehicle-Monitoring-System-3
    commit
