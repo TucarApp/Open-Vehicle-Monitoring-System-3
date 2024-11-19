@@ -20,7 +20,7 @@ practice is to prefix script names with 2-3 digit numbers in steps of 10 or 100 
 named ``50-…``), so new scripts can easily be integrated at a specific place.
 
 Output of background scripts without console association (e.g. event scripts) will be sent to the 
-log with tag ``script`` at "info" level.
+log with tag ``ovms-duk-util`` at "info" level.
 
 Note that the developer building firmware can optionally set the ``OVMS_DEV_SDCARDSCRIPTS`` build 
 flag. If that is set, then the system will also check ``/sd/scripts`` and ``/sd/events`` for 
@@ -1023,6 +1023,27 @@ The OvmsVehicle object is the most comprehensive, and exposes several methods to
       else
         print(res.response_hex);
 
+- ``success = OvmsVehicle.AuxMon.Enable( [ LowThreshholdV [, ChargeThreshholdV] ] )``
+    Enable the 12v Auxiliary battery monitor. This will enable the ``vehicle.aux.12v.*`` events to fire.
+    Useful for preventing battery drain by only polling ECUs when necessary (on certain cars).
+- ``OvmsVehicle.AuxMon.Disable()``
+    Disable the 12v Auxiliary battery monitor.
+- ``Obj = OvmsVehicle.AuxMon.Status()``
+    Returns the status of the Auxiliary battery monitor.
+    A 'dip' is a temporary lowering of the voltage.
+    A 'blip' is a temporary raising of the voltage.
+    
+    .. code-block:: javascript
+      
+      {
+        "enabled": <boolean>,
+        "low_threshold": <float>,     // The voltage below which is considered low-voltage (status="low")
+        "charge_threshold": <float>,  // The voltage above which is considered charging (status="charging*")
+        "short_avg": <float>,         // The current 'short period' (2s) average.
+        "long_avg": <float>,          // The current 'long period' (8s) average.
+        "state": <string>,            // On of: normal, charging, charging.dip, charging.blip, blip, dip, low
+      }
+
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 OvmsVehicle Command Plugins
@@ -1096,31 +1117,36 @@ inline or by loading a lib module (see `Persistent JavaScript`_).
 
 OvmsPoller
 ^^^^^^^^^^
+
 The Ovms Poller object represents the poller sub-system. It contains the following methods:
 
 - ``ispaused = OvmsPoller.GetPaused()``: Return true if the poller is paused by the system/user.
 - ``ispaused = OvmsPoller.GetUserPaused()``: Return true if the poller is paused by the user.
 - ``OvmsPoller.Pause()``: Pause the poller (adds User poller pause)
 - ``OvmsPoller.Resume()``: Remove the User poller pause.
-
-- ``OvmsPoller.Trace({ poller: true, txrx: false})``: Enable traces for poller/txrx tasks.
-    Enabling trace still requires that 'Verbose' or 'Debug' levels (depending) for the
-    'vehicle-poll' debug tags are set.
-    The flag ``poller`` refers to the poller task itself (relatively safe) and ``txrx`` refers to the Can TX/RX task
-    (not safe, especially for some cars).
+- ``OvmsPoller.Trace({ poller: true, txrx: false })``: Enable traces for poller/txrx tasks.
+  Enabling trace still requires that 'Verbose' or 'Debug' levels (depending) for the
+  'vehicle-poll' debug tags are set.
+  The flag ``poller`` refers to the poller task itself (relatively safe) and ``txrx`` refers to the Can TX/RX task
+  (not safe, especially for some cars).
 - ``tracemodes = OvmsPoller.GetTraceStatus()``: Return the current trace mode for the respective 'tasks'. Eg
-    .. code-block:: javascript
-   { "poller": true, "txrx": false }
+
+  .. code-block:: javascript
+
+    { "poller": true, "txrx": false }
 
 The poller object also contains a ``Times`` property for the OBD Poll-Time tracing
 which contains the following methods:
+
 - ``isrunning = OvmsPoller.Times.GetStarted()``: Returns true if the time-tracing is enabled
 - ``OvmsPoller.Times.Start``: Starts the timer-tracing
 - ``OvmsPoller.Times.Stop``: Stops the timer-tracing
 - ``OvmsPoller.Times.Reset()``: Reset the timers (doesn't affect their current state).
 - ``OvmsPoller.Times.GetStatus()``: Gets the status of the various times. This returns an object
-    of this format:
-    .. code-block:: javascript
+  of this format:
+
+  .. code-block:: javascript
+
     return_value = {
       "started": true,
       "items": {
@@ -1179,6 +1205,7 @@ which contains the following methods:
       "tot_util_pm": 6.247,
       "tot_time_ms": 4.628
     };
+
 
 --------------
 Test Utilities

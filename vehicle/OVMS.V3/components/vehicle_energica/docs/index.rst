@@ -1,10 +1,16 @@
-=======================
-Smart ED/EQ Gen.4 (453)
-=======================
+===================
+Energica motorbikes
+===================
 
-Vehicle Type: **SQ**
+Vehicle Type: **NR**
 
-The Smart ED/EQ Gen.4 will be documented here.
+This vehicle aims to support all Energica motorbikes:
+* EsseEsse9 (SS9)
+* Eva Ribelle
+* Ego
+* Experia
+
+It was tested on a Ribelle and Experia.
 
 ----------------
 Support Overview
@@ -18,23 +24,17 @@ Vehicle Cable               OBD-II to DB9 Data Cable for OVMS (1441200 right, or
 GSM Antenna                 1000500 Open Vehicles OVMS GSM Antenna (or any compatible antenna)
 GPS Antenna                 1020200 Universal GPS Antenna (SMA Connector) (or any compatible antenna)
 SOC Display                 Yes
-Range Display               Yes
-GPS Location                Yes (from modem module GPS)
+Range Display               No
+GPS Location                Yes (from modem module GPS, internal bike GPS when smartphone is connected to the bike)
 Speed Display               Yes
-Temperature Display         Yes (External Temp and Battery)
-BMS v+t Display             only Cell Volts atm.
-TPMS Display                Yes pressure only
+Temperature Display         Partial (OK: motor, battery; NOK: ambiant)
+BMS v+t Display             Yes
+TPMS Display                No
 Charge Status Display       Yes
-Charge Interruption Alerts  No
+Charge Interruption Alerts  Yes (built-in)
 Charge Control              No
-Cabin Pre-heat/cool Control Yes
-Lock/Unlock Vehicle         No
-Valet Mode Control          No
+Cabin Pre-heat/cool Control No
+Lock/Unlock Vehicle         N/A
+Valet Mode Control          N/A
 Others
 =========================== ==============
-
--------------------------
-Using Cabin Pre-heat/cool
--------------------------
-
-Only 5 Minutes Booster are Implementet white Climatecontrol on or Homelink 1
